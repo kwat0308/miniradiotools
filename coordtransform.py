@@ -26,8 +26,6 @@ def spherical_to_cartesian(zenith, azimuth):
         return np.array([x, y, z])
     
 
-
-
 #* * * * * * * * * * * * * * * * *
  
 """
@@ -50,7 +48,7 @@ class coordtransform():
     and vice versa.
     """
 
-    def __init__(self, zenith, azimuth, declination, magnetic_field_vector=None):
+    def __init__(self, zenith, azimuth, declination, inclination, magnetic_field_vector=None):
         """ Initialization with signal/air-shower direction and magnetic field configuration.
 
         All parameters should be specified according to the default coordinate
@@ -71,8 +69,12 @@ class coordtransform():
             the site for which the magnetic field vector should be used. Currently, default
             values for for the sites 'auger' and 'arianna' are available
         """
-        # TODO: check inclination vs declination
-        inclination = declination # this is a bold assumption, and probably wrong, but I will fix this at some point
+
+        # TODO: unhardcode this
+        # for Dunhuang:
+        inclination = 61.60523 # degrees
+        declination = 0.12532 # degrees
+
 
         showeraxis = -1 * spherical_to_cartesian(zenith, azimuth)  # -1 is because shower is propagating towards us
 
