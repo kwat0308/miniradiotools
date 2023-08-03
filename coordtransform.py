@@ -24,32 +24,6 @@ def spherical_to_cartesian(zenith, azimuth):
         return np.array([x, y, z]).T
     else:
         return np.array([x, y, z])
-    
-
-
-def get_declination(magnetic_field_vector):
-    declination = np.arccos(np.dot(np.array([0, 1]), magnetic_field_vector[:2] /
-                                   np.linalg.norm(magnetic_field_vector[:2])))
-    return declination
-
-
-# TODO: put in values for GRAND
-def get_magnetic_field_vector(site=None):
-    """
-    get the geomagnetic field vector in Gauss. x points to geographic East and y towards geographic North
-    """
-    magnetic_fields = {'auger': np.array([0.00871198, 0.19693423, 0.1413841]),
-                       'mooresbay': np.array([0.058457, -0.09042, 0.61439]),
-                       'summit': np.array([-.037467, 0.075575, -0.539887]),  # Summit station, Greenland
-                       'southpole': np.array([-0.14390398, 0.08590658, 0.52081228]),  # position of SP arianna station
-                       'grand': np.array([]) # position of DunHuang site of GRAND
-    }
-
-    if site is None:
-        site = 'none'
-
-    
-    return magnetic_fields[site]
 
 
 #* * * * * * * * * * * * * * * * *
@@ -74,7 +48,7 @@ class coordtransform():
     and vice versa.
     """
 
-    def __init__(self, zenith, azimuth, magnetic_field_vector=None, site=None):
+    def __init__(self, zenith, azimuth, declination, magnetic_field_vector=None, site=None):
         """ Initialization with signal/air-shower direction and magnetic field configuration.
 
         All parameters should be specified according to the default coordinate
@@ -126,7 +100,7 @@ class coordtransform():
             self.__transformation_matrix_onsky)
 
         # initialize transformation matrix from magnetic north to geographic north coordinate system
-        declination = get_declination(magnetic_field_vector)
+        
         c = np.cos(-1 * declination)
         s = np.sin(-1 * declination)
         e1 = np.array([c, -s, 0])
