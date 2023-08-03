@@ -50,7 +50,7 @@ class coordtransform():
     and vice versa.
     """
 
-    def __init__(self, zenith, azimuth, declination, magnetic_field_vector=None, site=None):
+    def __init__(self, zenith, azimuth, declination, magnetic_field_vector=None):
         """ Initialization with signal/air-shower direction and magnetic field configuration.
 
         All parameters should be specified according to the default coordinate
@@ -71,11 +71,16 @@ class coordtransform():
             the site for which the magnetic field vector should be used. Currently, default
             values for for the sites 'auger' and 'arianna' are available
         """
+        # TODO: check inclination vs declination
+        inclination = declination # this is a bold assumption, and probably wrong, but I will fix this at some point
+
         showeraxis = -1 * spherical_to_cartesian(zenith, azimuth)  # -1 is because shower is propagating towards us
+
         if(magnetic_field_vector is None):
-            magnetic_field_vector = get_magnetic_field_vector(site=site)
-        magnetic_field_normalized = magnetic_field_vector / \
-            linalg.norm(magnetic_field_vector)
+            magnetic_field_vector = np.array([0, np.cos(inclination), -np.sin(inclination)]) 
+            # this calculation for B is also used in starshapes.py
+
+        magnetic_field_normalized = magnetic_field_vector / linalg.norm(magnetic_field_vector)
         vxB = np.cross(showeraxis, magnetic_field_normalized)
         e1 = vxB
         e2 = np.cross(showeraxis, vxB)
