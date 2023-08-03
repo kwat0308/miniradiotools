@@ -23,7 +23,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     B = np.array([0, np.cos(inclination), -np.sin(inclination)])
 
     # create the coordinate transform
-    cs = coordtransform.cstrafo(zenith, azimuth, magnetic_field_vector=B)
+    cs = coordtransform.cstrafo(zenith, azimuth, magnetic_field_vector=B) # TODO: check if this is supposed to be used somewhere
 
     # rs = radius slices?
     rs = np.linspace(Rmin, Rmax, n_rings + 1)
