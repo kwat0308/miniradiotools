@@ -49,13 +49,13 @@ class coordtransform():
     """
 
     def __init__(self, zenith, azimuth, 
-                 declination=np.deg2rad(0.12532), inclination=np.deg2rad(61.60523), 
+                 declination=np.deg2rad(0.12532), # for Dunhuang
+                 inclination=np.deg2rad(61.60523), # for Dunhuang
                  magnetic_field_vector=None):
         
         """ Initialization with signal/air-shower direction and magnetic field configuration.
 
-        All parameters should be specified according to the default coordinate
-        system of the radiotools package (the Auger coordinate system).
+        All parameters should be specified according to CORSIKA conventions.
 
         Parameters
         ----------
@@ -63,14 +63,18 @@ class coordtransform():
             zenith angle of the incoming signal/air-shower direction (0 deg is pointing to the zenith)
         azimuth : float
             azimuth angle of the incoming signal/air-shower direction (0 deg is North, 90 deg is South)
+        inclination : float
+            Inclination of the magnetic field.
+            It describes the angle between the Earth's surface and the magnetic field lines.
+            The default value is given for GRAND's Dunhuang site
+        declination : float
+            Declination of the magnetic field.
+            It describes the angle between the magnetic north of a compass and the true north.
+            The default value is given for GRAND's Dunhuang site
+        
         magnetic_field_vector (optional): 3-vector, default None
             the magnetic field vector in the cartesian ground coordinate system,
-            if no magnetic field vector is specified, the default value for the
-            site specified in the 'site' function argument is used.
-        site (optional): string, default 'Auger'
-            this argument has only effect it 'magnetic_field_vector' is None
-            the site for which the magnetic field vector should be used. Currently, default
-            values for for the sites 'auger' and 'arianna' are available
+            if no magnetic field vector is specified, the value is calculated from the given inclination.
         """
 
         showeraxis = -1 * spherical_to_cartesian(zenith, azimuth)  # -1 is because shower is propagating towards us

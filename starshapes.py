@@ -3,15 +3,36 @@ import coordtransform
 import sys
 
 def create_stshp_list(zenith, azimuth, filename="antenna.list", 
-                        obslevel=1564.0, obsplane = "groundplane",
-                        inclination=np.deg2rad(61.60523), 
-                        Rmin=0., Rmax=500., n_rings=20,
-                        azimuths=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]) ):
+                        obslevel=156400.0, # for Dunhuang, in cm for corsika
+                        obsplane = "groundplane",
+                        inclination=np.deg2rad(61.60523), # for Dunhuang
+                        Rmin=0., Rmax=500., n_rings=20, # for positions in starshape
+                        azimuths=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]) # for positions in starshape
+                        ):
 
     """
-    filename should be a string with the extension .list
-    obsplane = "groundplane" for ground plane
-    obsplane = "showerplane" for shower plane
+    Parameters
+    ----------
+    zenith : float
+            zenith angle of the incoming signal/air-shower direction (0 deg is pointing to the zenith)
+    azimuth : float
+            azimuth angle of the incoming signal/air-shower direction (0 deg is North, 90 deg is South)
+    filename: string
+            should have the extension ".list"
+            If the file is supposed to be used with the 
+            radio_mpi Corsika generator (https://github.com/fedbont94/Horeka/tree/radio_mpi),
+            keep the default filename.
+    obsplane : string
+            possible options are:
+                "groundplane" for ground plane
+                "showerplane" for shower plane
+    inclination : float
+            Inclination of the magnetic field.
+            It describes the angle between the Earth's surface and the magnetic field lines.
+            The default value is given for GRAND's Dunhuang site
+
+    Rmin, Rmax, n_rings, azimuths : used to calculate the positions of the antennas on the arms of the starshape
+            Do not change unless you know what you are doing!
     """
 
     # compute translation in x and y
@@ -52,6 +73,6 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
             else:
                 sys.exit("Wrong choice of observation plane. Possible options are 'groundplane' or 'showerplane'. \n Quitting...")
 
-    # save the generated starshapes to the file
+    # save the generated starshapes to the antenna.list file
     with open(filename, "w") as file:
         file.write(f"AntennaPosition = {x} {y} {z} {name}\n")
