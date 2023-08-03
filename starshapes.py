@@ -1,10 +1,10 @@
 import numpy as np
 import coordtransform
-
+import sys
 
 def create_stshp_list(zenith, azimuth, filename="antenna.list", 
                         obslevel=1564.0, obsplane = "groundplane",
-                        declination=np.deg2rad(-35.7324), 
+                        inclination=np.deg2rad(-35.7324), 
                         Rmin=0., Rmax=500., n_rings=20,
                         azimuths=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]) ):
 
@@ -20,7 +20,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     dy = np.sin(azimuth) * r
 
     # compute the B field
-    B = np.array([0, np.cos(declination), -np.sin(declination)])
+    B = np.array([0, np.cos(inclination), -np.sin(inclination)])
 
     # create the coordinate transform
     cs = coordtransform.cstrafo(zenith, azimuth, magnetic_field_vector=B)
@@ -50,9 +50,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
             
             # dealing with wrong obsplanes:
             else:
-                print("Wrong choice of observation plane. Possible options are 'groundplane' or 'showerplane'.")
-                print("Quitting...")
-                quit()
+                sys.exit("Wrong choice of observation plane. Possible options are 'groundplane' or 'showerplane'. \n Quitting...")
 
     # save the generated starshapes to the file
     with open(filename, "w") as file:
