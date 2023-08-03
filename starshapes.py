@@ -4,7 +4,7 @@ import sys
 
 def create_stshp_list(zenith, azimuth, filename="antenna.list", 
                         obslevel=1564.0, obsplane = "groundplane",
-                        inclination=np.deg2rad(-35.7324), 
+                        inclination=np.deg2rad(61.60523), 
                         Rmin=0., Rmax=500., n_rings=20,
                         azimuths=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]) ):
 

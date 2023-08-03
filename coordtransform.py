@@ -48,7 +48,10 @@ class coordtransform():
     and vice versa.
     """
 
-    def __init__(self, zenith, azimuth, declination, inclination, magnetic_field_vector=None):
+    def __init__(self, zenith, azimuth, 
+                 declination=np.deg2rad(0.12532), inclination=np.deg2rad(61.60523), 
+                 magnetic_field_vector=None):
+        
         """ Initialization with signal/air-shower direction and magnetic field configuration.
 
         All parameters should be specified according to the default coordinate
@@ -69,12 +72,6 @@ class coordtransform():
             the site for which the magnetic field vector should be used. Currently, default
             values for for the sites 'auger' and 'arianna' are available
         """
-
-        # TODO: unhardcode this
-        # for Dunhuang:
-        inclination = 61.60523 # degrees
-        declination = 0.12532 # degrees
-
 
         showeraxis = -1 * spherical_to_cartesian(zenith, azimuth)  # -1 is because shower is propagating towards us
 
