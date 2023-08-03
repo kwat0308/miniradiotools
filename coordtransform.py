@@ -24,6 +24,8 @@ def spherical_to_cartesian(zenith, azimuth):
         return np.array([x, y, z]).T
     else:
         return np.array([x, y, z])
+    
+
 
 
 #* * * * * * * * * * * * * * * * *
@@ -100,7 +102,7 @@ class coordtransform():
             self.__transformation_matrix_onsky)
 
         # initialize transformation matrix from magnetic north to geographic north coordinate system
-        
+       
         c = np.cos(-1 * declination)
         s = np.sin(-1 * declination)
         e1 = np.array([c, -s, 0])
