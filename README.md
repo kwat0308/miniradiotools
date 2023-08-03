@@ -5,3 +5,10 @@ Welcome to the miniradiotools package! It is a minimalistic python package for t
 Since miniradiotools is meant to be used with CORSIKA (https://web.iap.kit.edu/corsika/usersguide/usersguide.pdf) and its radio extension CoREAS (https://web.ikp.kit.edu/huege/downloads/coreas-manual.pdf), it uses CORSIKA conventions.
 
 It's inspired by the radiotools package: https://github.com/nu-radio/radiotools/
+
+
+## Input Parameters
+
+The scripts use GRAND's Dunhuang site as reference for default parameters, but they can easily be changed for any other site.
+
+Magnetic field parameters can be looked up here: https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml#igrfwmm
