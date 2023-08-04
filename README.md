@@ -25,7 +25,7 @@ Generates antennas in starshape positions for groundplane or showerplane.
 Has coordinate transformation functions. Do not touch unless you know what you are doing!
 
 ### energy_fluence.py
-Calculated energy fluence.
+Calculates energy fluence.
 
 ## How to run
 ### antenna_plotter.py
