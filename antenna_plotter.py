@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 import glob
 import matplotlib.pyplot as plt
@@ -7,15 +8,26 @@ from matplotlib import rc
 # dark plots (e.g. for slides):
 # plt.style.use("dark_background")
 
+parser = argparse.ArgumentParser(description="")
+
+# parser asks for hdf5 input files to plot results from
+parser.add_argument(
+    "path",
+    metavar="PATH",
+    type=str,
+    nargs="*",
+    default=[],
+    help="Choose antenna layout file.",
+)
+
+args = parser.parse_args()
+
 if __name__ == "__main__":
     import sys
-    print('sys.argv: ', sys.argv)
-    path = sys.argv[1] # first argument should be the path to the antenna.list file
-
-    
+    print('Command line arguments: ', args) # first argument should be the path to the antenna.list file
 
     # find the antenna.list file in the given directory
-    listfile = path
+    listfile = args.path[0]
     print("Found file: ", listfile)
     fname = listfile.split(".list")[0].split("/")[-1] # remove path and .list extension
     savename = listfile.split(".list")[0] # remove the .list extension
