@@ -98,10 +98,10 @@ class cstransform():
             self.__transformation_matrix_vBvvB)
 
         # initialize transformation matrix to on-sky coordinate system (er, etheta, ephi)
-        ct = np.cos(zenith)
-        st = np.sin(zenith)
-        cp = np.cos(azimuth)
-        sp = np.sin(azimuth)
+        ct = np.cos(zenith) # cosinus theta 
+        st = np.sin(zenith) # sinus theta 
+        cp = np.cos(azimuth) # cosinus phi
+        sp = np.sin(azimuth) # sinus phi
         e1 = np.array([st * cp, st * sp, ct])
         e2 = np.array([ct * cp, ct * sp, -st])
         e3 = np.array([-sp, cp, 0])
