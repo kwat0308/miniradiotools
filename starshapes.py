@@ -1,6 +1,6 @@
 import numpy as np
-from coordtransform import cstransform
-from coordtransform import spherical_to_cartesian
+from utils.coordtransform import cstransform
+from utils.coordtransform import spherical_to_cartesian
 import sys
 
 cst = cstransform(
