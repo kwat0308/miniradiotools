@@ -42,7 +42,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     Rmin, Rmax, n_rings, azimuths : used to calculate the positions of the antennas on the arms of the starshape
             Do not change unless you know what you are doing!
     """
-    print("calling the function")
+    print("Generating antenna positions in ", obsplane)
     # compute translation in x and y
     r = np.tan(zenith) * obslevel
     dx = np.cos(azimuth) * r
@@ -82,3 +82,5 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                         # dealing with wrong obsplanes:
                         else:
                                 sys.exit("Wrong choice of observation plane. Possible options are 'groundplane' or 'showerplane'. \n Quitting...")
+
+        print("Saved antenna positions to file: ", filename)
