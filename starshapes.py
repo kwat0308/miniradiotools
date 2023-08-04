@@ -15,7 +15,8 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                         obsplane = "showerplane",
                         inclination=np.deg2rad(61.60523), # for Dunhuang
                         Rmin=0., Rmax=500., n_rings=20, # for positions in starshape
-                        azimuths=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]) # for positions in starshape
+                        azimuths=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape
+                        vxB_plot=False
                         ):
 
     """
@@ -57,7 +58,23 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     # rs = radius slices?
     rs = np.linspace(Rmin, Rmax, n_rings + 1)
 
-    # open the antenna.list file to save the generated starshapes to
+
+    if vxB_plot==True:
+        # open the shower.list file to save the generated starshapes to
+        with open("shower.list", "w") as file:
+                for i in np.arange(1, n_rings + 1):
+                        for j in np.arange(len(azimuths)):
+                                station_position = rs[i] * spherical_to_cartesian(np.pi * 0.5, azimuths[j])
+                                name = "pos_%i_%i_%.0f_%s" % (rs[i], np.rad2deg(azimuths[j]), obslevel, obsplane)
+
+                                x, y, z = station_position
+                                # save the generated starshapes to the antenna.list file
+                                file.write(f"AntennaPosition = {x} {y} {z} {name}\n")
+
+                print("Saved antenna positions (in vxB_vxvxB coordinates) to file: ", "shower.list")
+
+
+# open the antenna.list file to save the generated starshapes to
     with open(filename, "w") as file:
         for i in np.arange(1, n_rings + 1):
                 for j in np.arange(len(azimuths)):
@@ -86,4 +103,4 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                         else:
                                 sys.exit("Wrong choice of observation plane. Possible options are 'groundplane' or 'showerplane'. \n Quitting...")
 
-        print("Saved antenna positions to file: ", filename)
+        print("Saved antenna positions (in cartesian coordinates) to file: ", filename)
