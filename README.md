@@ -44,3 +44,7 @@ create_stshp_list(\
                         )
 
 Zenith and azimuth have to be specified, all other parameters are optional.
+
+*Zenith* and *azimuth* have to be specified in *degrees*, they are converted to radians in the script.
+*Inclination* has to be specified in *radians*, but np.deg2rad(<degrees>) is fine as input.
+
