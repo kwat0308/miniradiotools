@@ -12,3 +12,20 @@ It's inspired by the radiotools package: https://github.com/nu-radio/radiotools/
 The scripts use GRAND's Dunhuang site as reference for default parameters, but they can easily be changed for any other site.
 
 Magnetic field parameters can be looked up here: https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml#igrfwmm
+
+## How to run
+### antenna_plotter.py
+python antenna_plotter.py <path_to_antenna.list>
+
+### starshapes.py
+Using ipython or another python script, call the function
+
+create_stshp_list(zenith, azimuth, filename="antenna.list", 
+                        obslevel=156400.0, # for Dunhuang, in cm for corsika
+                        obsplane = "showerplane",
+                        inclination=np.deg2rad(61.60523), # for Dunhuang
+                        Rmin=0., Rmax=500., n_rings=20, # for positions in starshape
+                        azimuths=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]) # for positions in starshape
+                        )
+
+Zenith and azimuth have to be specified, all other parameters are optional.
