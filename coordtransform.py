@@ -32,7 +32,7 @@ def spherical_to_cartesian(zenith, azimuth):
 The following class is copied and modified from radiotools.coordinatesystems. It is originally called "cstrafo" there.
 """
 
-class coordtransform():
+class cstransform():
 
     """ class to perform coordinate transformations typically used in air shower radio detection
 
@@ -263,8 +263,7 @@ class coordtransform():
             for pos in station_position:
                 if(core is not None):
                     pos -= core
-                result.append(self.__transform(pos,
-                                               self.__transformation_matrix_vBvvB))
+                result.append(self.__transform(pos, self.__transformation_matrix_vBvvB))
             return np.squeeze(np.array(result))
 
 
