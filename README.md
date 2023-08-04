@@ -13,6 +13,20 @@ The scripts use GRAND's Dunhuang site as reference for default parameters, but t
 
 Magnetic field parameters can be looked up here: https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml#igrfwmm
 
+## Scripts
+### antenna_plotter.py
+Plots antenna positions from antenna.list files with the structure:\
+AntennaPosition = {x} {y} {z} {name}
+
+### starshapes.py
+Generates antennas in starshape positions for groundplane or showerplane.
+
+### coordtransform.py
+Has coordinate transformation functions. Do not touch unless you know what you are doing!
+
+### energy_fluence.py
+Calculated energy fluence.
+
 ## How to run
 ### antenna_plotter.py
 python antenna_plotter.py <path_to_antenna.list>
@@ -20,7 +34,8 @@ python antenna_plotter.py <path_to_antenna.list>
 ### starshapes.py
 Using ipython or another python script, call the function
 
-create_stshp_list(zenith, azimuth, filename="antenna.list", \
+create_stshp_list(\
+    zenith, azimuth, filename="antenna.list", \
                         obslevel=156400.0, # for Dunhuang, in cm for corsika\
                         obsplane = "showerplane",\
                         inclination=np.deg2rad(61.60523), # for Dunhuang\
