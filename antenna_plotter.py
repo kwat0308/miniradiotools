@@ -67,6 +67,12 @@ if __name__ == "__main__":
     ax = fig.add_subplot(projection='3d')
     plt.title(fname + title + " 3D")
     ax.scatter(x, y, z, color="hotpink")
+
+    # axis labels
+    ax.set_xlabel('vxB [cm]', fontsize=10, rotation=150)
+    ax.set_ylabel('vxvxB [cm]', fontsize=10)
+    ax.set_zlabel('v[cm]', fontsize=10, rotation=60)
+
     plt.savefig(savename + "_3D.png", dpi = 300)
     # show the 3D interactive plot
     plt.show()
