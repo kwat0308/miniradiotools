@@ -21,9 +21,9 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     """
     Parameters
     ----------
-    zenith : float
+    zenith : float (in degrees)
             zenith angle of the incoming signal/air-shower direction (0 deg is pointing to the zenith)
-    azimuth : float
+    azimuth : float (in degrees)
             azimuth angle of the incoming signal/air-shower direction (0 deg is North, 90 deg is South)
     filename: string
             should have the extension ".list"
@@ -34,7 +34,8 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
             possible options are:
                 "groundplane" for ground plane
                 "showerplane" for shower plane
-    inclination : float
+    inclination : float (in rad)
+            can be typed as np.deg2rad(<deg>)
             Inclination of the magnetic field.
             It describes the angle between the Earth's surface and the magnetic field lines.
             The default value is given for GRAND's Dunhuang site
@@ -42,6 +43,8 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     Rmin, Rmax, n_rings, azimuths : used to calculate the positions of the antennas on the arms of the starshape
             Do not change unless you know what you are doing!
     """
+    zenith = np.deg2rad(zenith)
+    azimuth = np.deg2rad(azimuth)
     print("Generating antenna positions in ", obsplane)
     # compute translation in x and y
     r = np.tan(zenith) * obslevel
