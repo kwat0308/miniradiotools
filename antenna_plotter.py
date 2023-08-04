@@ -4,11 +4,6 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib import rc
 
-# mpl setup
-mpl.rcParams['lines.markersize'] = 5
-rc('font', **{'family':'serif','serif':['Palatino']})
-rc('text', usetex = True)
-
 # dark plots (e.g. for slides):
 # plt.style.use("dark_background")
 
@@ -17,13 +12,10 @@ if __name__ == "__main__":
     print('sys.argv: ', sys.argv)
     path = sys.argv[1] # first argument should be the path to the antenna.list file
 
-    # if the specified path is missing a / at the end, add a / to the end of the path
-    if (path[-1]!="/"):
-        path = path + "/"
     
 
     # find the antenna.list file in the given directory
-    listfile = glob.glob(path + "*.list")[0] 
+    listfile = path
     print("Found file: ", listfile)
     fname = listfile.split(".list")[0].split("/")[-1] # remove path and .list extension
     savename = listfile.split(".list")[0] # remove the .list extension

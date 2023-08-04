@@ -33,8 +33,8 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
             keep the default filename.
     obsplane : string
             possible options are:
-                "groundplane" for ground plane
-                "showerplane" for shower plane
+                "groundplane" for antenna positions in the ground plane
+                "showerplane" for antenna positions in the shower plane, in the air
     inclination : float (in rad)
             can be typed as np.deg2rad(<deg>)
             Inclination of the magnetic field.
