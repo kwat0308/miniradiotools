@@ -21,11 +21,13 @@ AntennaPosition = {x} {y} {z} {name}
 ### starshapes.py
 Generates antennas in starshape positions for groundplane or showerplane.
 
-### coordtransform.py
-Has coordinate transformation functions. Do not touch unless you know what you are doing!
-
 ### energy_fluence.py
 Calculates energy fluence.
+
+
+### utils/coordtransform.py
+Has coordinate transformation functions. Do not touch unless you know what you are doing!
+
 
 ## How to run
 ### antenna_plotter.py
@@ -50,4 +52,6 @@ Zenith and azimuth have to be specified, all other parameters are optional.
 
 **Inclination** has to be specified in **radians**, but np.deg2rad(<degrees>) is fine as input.
 
-Set *vxb_plot=True* if you want to store the positions in vxb coordinates as well.
+Set *vxb_plot=True* if you want to store the positions in vxb coordinates as well. They will be saved to "shower.list".
+
+Antenna positions in cartesian coordinates are stored to **"antenna.list"** by default. This name can be changed in the input parameters.
