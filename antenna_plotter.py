@@ -1,37 +1,34 @@
-import argparse
 import numpy as np
-import glob
 import matplotlib.pyplot as plt
-import matplotlib as mpl
-from matplotlib import rc
+from optparse import OptionParser
+import sys
 
 # dark plots (e.g. for slides):
 # plt.style.use("dark_background")
 
-parser = argparse.ArgumentParser(description="")
+parser = OptionParser()
+parser.add_option("--path", "-p", "--list", "-l", type="str", dest="list", metavar="FILE",
+                  help="Specify the full path to the desired .list file.")
+parser.add_option("--directory", "--dir", "-d", type="str", dest="dir", metavar="PATH",
+                  help="Specify the path of the directory where the desired .list file is located.\n WARNING: This is only possible, if the directory contains ONE .list file.")
+parser.add_option("--plotname", "--name", type="str", dest="name",
+                  help="Optional: The title of the plot. If not provided, the plot will be named after the antenna names in the file.")
 
-# parser asks for hdf5 input files to plot results from
-parser.add_argument(
-    "path",
-    metavar="PATH",
-    type=str,
-    nargs="*",
-    default=[],
-    help="Choose antenna layout file.",
-)
-
-args = parser.parse_args()
+(options, args) = parser.parse_args()
 
 if __name__ == "__main__":
-    import sys
-    print('Command line arguments: ', args) # first argument should be the path to the antenna.list file
-
     # find the antenna.list file in the given directory
-    listfile = args.path[0]
+    if options.list:
+        listfile=options.list
+    elif options.dir:
+        listfile=options.dir
+    else:
+        sys.exit("No .list file found. Quitting...")
+
+    
     print("Found file: ", listfile)
     fname = listfile.split(".list")[0].split("/")[-1] # remove path and .list extension
     savename = listfile.split(".list")[0] # remove the .list extension
-
 
     # read the file
     file = np.genfromtxt(listfile, delimiter = " ")
@@ -47,9 +44,21 @@ if __name__ == "__main__":
     if name[0].split("_")[-1] == "showerplane":
         title = " showerplane starshapes"
     
+    # if file was created with the original radiotools, "sp" is showerplane
+    elif name[0].split("_")[-1] == "sp":
+        title = " showerplane starshapes"
+
     # groundplane starshapes have "groundplane" in the name
     elif name[0].split("_")[-1] == "groundplane":
         title = " groundplane starshapes"
+
+    # if file was created with the original radiotools, "gp" is groundplane
+    elif name[0].split("_")[-1] == "gp":
+        title = " groundplane starshapes"
+
+    # if a name for the plot was passed as option, use that:
+    elif options.name:
+        title = options.name
 
     # if it's something else, just use the name of the first antenna
     else: 
