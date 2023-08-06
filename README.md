@@ -29,7 +29,26 @@ Calculates energy fluence.
 
 ## How to run
 ### antenna_plotter.py
-python antenna_plotter.py <path_to_antenna.list>
+In order to run the antenna_plotter.py,
+You can either enter the path of the directory containing a single (!) .list file:\
+python antenna_plotter.py --dir <path_to_antenna.list>
+
+Or you can enter the full path to the .list file:\
+python antenna_plotter.py --list <path_to_antenna.list>\
+This is especially useful, when a directory contains more than one .list file.
+
+Additionally, you can specify the title of the resulting plots using the option\
+--plotname\
+or\
+--name\
+If not provided, the plot will be titles with "showerplane", "groundplane" or after the first antenna name in the file.
+
+
+You can get a detailed description of the options by entering\
+python antenna_plotter.py -h\
+or\
+python antenna_plotter.py --help\
+
 
 ### starshapes.py
 Using ipython or another python script, call the function
