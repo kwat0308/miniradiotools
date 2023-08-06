@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Inspired by the radiotools package https://github.com/nu-radio/radiotools/
+# author: Jelena Köhler, @jelenakhlr
+# co-author: Lukas Gülzow, @lguelzow
+
 import numpy as np
 from utils.coordtransform import cstransform
 from utils.coordtransform import spherical_to_cartesian
@@ -44,8 +51,12 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     Rmin, Rmax, n_rings, arm_orientations : used to calculate the positions of the antennas on the arms of the starshape
             Do not change unless you know what you are doing!
     """
+    
+    # convert zenith and azimuth to radians
     zenith = np.deg2rad(zenith)
     azimuth = np.deg2rad(azimuth)
+
+
     print("Generating antenna positions in ", obsplane)
     # compute translation in x and y
     r = np.tan(zenith) * obslevel

@@ -68,3 +68,6 @@ Zenith and azimuth have to be specified, all other parameters are optional.
 
 **Inclination** has to be specified in **radians** (!), but np.deg2rad(<degrees>) is fine as input.
 
+## Authors
+author: Jelena Köhler, @jelenakhlr
+co-author: Lukas Gülzow, @lguelzow

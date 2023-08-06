@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# author: Jelena Köhler, @jelenakhlr
+# co-author: Lukas Gülzow, @lguelzow
+
 import numpy as np
 import matplotlib.pyplot as plt
 from optparse import OptionParser

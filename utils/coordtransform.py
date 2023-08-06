@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 # copied and slightly modified from https://github.com/nu-radio/radiotools
+# author: Jelena Köhler, @jelenakhlr
+# co-author: Lukas Gülzow, @lguelzow
+
 
 import numpy as np
 import math
