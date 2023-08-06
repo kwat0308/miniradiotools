@@ -51,11 +51,6 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     Rmin, Rmax, n_rings, arm_orientations : used to calculate the positions of the antennas on the arms of the starshape
             Do not change unless you know what you are doing!
     """
-    
-    # convert zenith and azimuth to radians
-    zenith = np.deg2rad(zenith)
-    azimuth = np.deg2rad(azimuth)
-
 
     print("Generating antenna positions in ", obsplane)
     # compute translation in x and y
