@@ -19,7 +19,7 @@ cst = cstransform(
 
 def create_stshp_list(zenith, azimuth, filename="antenna.list", 
                         obslevel=156400.0, # for Dunhuang, in cm for corsika
-                        obsplane = "showerplane",
+                        obsplane = "gp",
                         inclination=np.deg2rad(61.60523), # for Dunhuang
                         Rmin=0., Rmax=500., n_rings=20, # for positions in starshape
                         arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape
@@ -40,8 +40,8 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
             keep the default filename.
     obsplane : string
             possible options are:
-                "groundplane" for antenna positions in the ground plane
-                "showerplane" for antenna positions in the shower plane, in the air
+                "gp" for antenna positions in the ground plane
+                "sp" for antenna positions in the shower plane, in the air
     inclination : float (in rad)
             can be typed as np.deg2rad(<deg>)
             Inclination of the magnetic field.
@@ -91,7 +91,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                         name = "pos_%i_%i_%.0f_%s" % (rs[i], np.rad2deg(arm_orientations[j]), obslevel, obsplane)
 
                         # ground plane:
-                        if obsplane == "groundplane":
+                        if obsplane == "gp":
                                 pos_2d = cst.transform_from_vxB_vxvxB_2D(station_position)  # position if height in observer plane should be zero
                                 pos_2d[0] += dx
                                 pos_2d[1] += dy
@@ -103,7 +103,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                                 file.write(f"AntennaPosition = {x} {y} {z} {name}\n")
 
                         # shower plane:
-                        elif obsplane == "showerplane":
+                        elif obsplane == "sp":
                                 pos = cst.transform_from_vxB_vxvxB(station_position)
                                 pos[0] += dx
                                 pos[1] += dy
@@ -116,7 +116,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                         
                         # dealing with wrong obsplanes:
                         else:
-                                sys.exit("Wrong choice of observation plane. Possible options are 'groundplane' or 'showerplane'. \n Quitting...")
+                                sys.exit("Wrong choice of observation plane. Possible options are 'gp' or 'sp'. \n Quitting...")
 
         # print(np.array(station_positions_groundsystem[0:10]))
         print("Saved antenna positions (in cartesian coordinates) to file: ", filename)
