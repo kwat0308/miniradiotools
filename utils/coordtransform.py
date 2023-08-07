@@ -82,8 +82,6 @@ class cstransform():
             the magnetic field vector in the cartesian ground coordinate system,
             if no magnetic field vector is specified, the value is calculated from the given inclination.
         """
-        zenith = np.deg2rad(zenith)
-        azimuth = np.deg2rad(azimuth)
 
 
         showeraxis = -1 * spherical_to_cartesian(zenith, azimuth)  # -1 is because shower is propagating towards us

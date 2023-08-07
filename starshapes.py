@@ -6,8 +6,8 @@
 # co-author: Lukas Gülzow, @lguelzow
 
 import numpy as np
-from miniradiotools.utils.coordtransform import cstransform
-from miniradiotools.utils.coordtransform import spherical_to_cartesian
+from utils.coordtransform import cstransform
+from utils.coordtransform import spherical_to_cartesian
 import sys
 
 cst = cstransform(
