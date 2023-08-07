@@ -21,7 +21,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                         obslevel=156400.0, # for Dunhuang, in cm for corsika
                         obsplane = "gp",
                         inclination=np.deg2rad(61.60523), # for Dunhuang
-                        Rmin=0., Rmax=500., n_rings=20, # for positions in starshape
+                        Rmin=0., Rmax=50000., n_rings=20, # for positions in starshape
                         arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape
                         vxB_plot=True
                         ):
@@ -95,7 +95,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                                 pos_2d = cst.transform_from_vxB_vxvxB_2D(station_position)  # position if height in observer plane should be zero
                                 pos_2d[0] += dx
                                 pos_2d[1] += dy
-                                x, y, z = 100 * pos_2d[0], 100 * pos_2d[1], 100 * obslevel
+                                x, y, z = pos_2d[0], pos_2d[1], obslevel
 
                                 station_positions_groundsystem.append([x, y, z])
 
@@ -107,7 +107,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                                 pos = cst.transform_from_vxB_vxvxB(station_position)
                                 pos[0] += dx
                                 pos[1] += dy
-                                x, y, z = 100 * pos[0], 100 * pos[1], 100 * (pos[2] + obslevel)
+                                x, y, z = pos[0], pos[1], (pos[2] + obslevel)
 
                                 station_positions_groundsystem.append([x, y, z])
 

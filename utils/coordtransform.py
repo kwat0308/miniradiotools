@@ -68,7 +68,7 @@ class cstransform():
         zenith : float
             zenith angle of the incoming signal/air-shower direction (0 deg is pointing to the zenith)
         azimuth : float
-            azimuth angle of the incoming signal/air-shower direction (0 deg is North, 90 deg is South)
+            azimuth angle of the incoming signal/air-shower direction (0 deg is North, 90 deg is East)
         inclination : float
             Inclination of the magnetic field.
             It describes the angle between the Earth's surface and the magnetic field lines.
