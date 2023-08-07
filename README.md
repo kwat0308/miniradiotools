@@ -31,7 +31,7 @@ Calculates energy fluence.
 ### antenna_plotter.py
 In order to run the *antenna_plotter.py*,
 You can either enter the path of the directory containing a single (!) *antenna.list* file:\
-*python antenna_plotter.py --dir <path_to_antenna.list>*
+*python antenna_plotter.py --dir <path_to_dir>*
 
 Or you can enter the full path to the .list file:\
 *python antenna_plotter.py --list <path_to_antenna.list>*\
@@ -47,7 +47,7 @@ If not provided, the plot will be titled with "showerplane", "groundplane" or af
 You can get a detailed description of the options by entering\
 *python antenna_plotter.py -h*\
 or\
-*python antenna_plotter.py --help*\
+*python antenna_plotter.py --help*
 
 
 ### starshapes.py
@@ -69,5 +69,5 @@ Zenith and azimuth have to be specified, all other parameters are optional.
 **Inclination** has to be specified in **radians** (!), but np.deg2rad(<degrees>) is fine as input.
 
 ## Authors
-author: Jelena Köhler, @jelenakhlr
+author: Jelena Köhler, @jelenakhlr\
 co-author: Lukas Gülzow, @lguelzow
