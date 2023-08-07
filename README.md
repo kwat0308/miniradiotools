@@ -31,7 +31,7 @@ Calculates energy fluence.
 ### antenna_plotter.py
 In order to run the *antenna_plotter.py*,
 You can either enter the path of the directory containing a single (!) *antenna.list* file:\
-*python antenna_plotter.py --dir <path_to_antenna.list>*
+*python antenna_plotter.py --dir <path_to_dir>*
 
 Or you can enter the full path to the .list file:\
 *python antenna_plotter.py --list <path_to_antenna.list>*\
