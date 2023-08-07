@@ -47,7 +47,7 @@ If not provided, the plot will be titled with "showerplane", "groundplane" or af
 You can get a detailed description of the options by entering\
 *python antenna_plotter.py -h*\
 or\
-*python antenna_plotter.py --help*\
+*python antenna_plotter.py --help*
 
 
 ### starshapes.py
