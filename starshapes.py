@@ -6,16 +6,9 @@
 # co-author: Lukas Gülzow, @lguelzow
 
 import numpy as np
-from utils.coordtransform import cstransform
-from utils.coordtransform import spherical_to_cartesian
+from miniradiotools.utils.coordtransform import cstransform
+from miniradiotools.utils.coordtransform import spherical_to_cartesian
 import sys
-
-cst = cstransform(
-    zenith = np.deg2rad(65.0),
-    azimuth= np.deg2rad(38.0),
-    declination=np.deg2rad(0.12532), # for Dunhuang
-    inclination=np.deg2rad(61.60523) # for Dunhuang
-)
 
 def create_stshp_list(zenith, azimuth, filename="antenna.list", 
                         obslevel=156400.0, # for Dunhuang, in cm for corsika
@@ -51,9 +44,21 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     Rmin, Rmax, n_rings, arm_orientations : used to calculate the positions of the antennas on the arms of the starshape
             Do not change unless you know what you are doing!
     """
+    print("Generating antenna positions in ", obsplane)
+    print("zenith: ", zenith)
+    print("azimuth: ", azimuth)
+
+    # convert to rad for numpy calculations
     zenith = np.deg2rad(zenith)
     azimuth = np.deg2rad(azimuth)
-    print("Generating antenna positions in ", obsplane)
+
+    # define coordinate system transformations
+    cst = cstransform(zenith = zenith,
+                      azimuth= azimuth,
+                      declination=np.deg2rad(0.12532), # for Dunhuang
+                      inclination=inclination # for Dunhuang
+                      )
+
     # compute translation in x and y
     r = np.tan(zenith) * obslevel
     dx = np.cos(azimuth) * r
@@ -96,7 +101,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                                 pos_2d = cst.transform_from_vxB_vxvxB_2D(station_position)  # position if height in observer plane should be zero
                                 pos_2d[0] += dx
                                 pos_2d[1] += dy
-                                x, y, z = pos_2d[0], pos_2d[1], obslevel
+                                x, y, z = pos_2d[1], -1*pos_2d[0], obslevel
 
                                 station_positions_groundsystem.append([x, y, z])
 
@@ -108,7 +113,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                                 pos = cst.transform_from_vxB_vxvxB(station_position)
                                 pos[0] += dx
                                 pos[1] += dy
-                                x, y, z = pos[0], pos[1], (pos[2] + obslevel)
+                                x, y, z = pos[1], -1*pos[0], (pos[2] + obslevel)
 
                                 station_positions_groundsystem.append([x, y, z])
 
@@ -119,7 +124,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                         else:
                                 sys.exit("Wrong choice of observation plane. Possible options are 'gp' or 'sp'. \n Quitting...")
 
-        # print(np.array(station_positions_groundsystem[0:10]))
+        print(np.array(station_positions_groundsystem[0:10]))
         print("Saved antenna positions (in cartesian coordinates) to file: ", filename)
 
 
