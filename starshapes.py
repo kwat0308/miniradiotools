@@ -30,7 +30,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     Parameters
     ----------
     zenith : float (in degrees)
-            zenith angle of the incoming signal/air-shower direction (0 deg is pointing to the zenith)
+            zenith angle of the incoming signal/air-shower direction (0 deg is pointing vertically upwards)
     azimuth : float (in degrees)
             azimuth angle of the incoming signal/air-shower direction (0 deg is North, 90 deg is West)
     filename: string
