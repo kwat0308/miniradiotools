@@ -21,7 +21,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                         obslevel=156400.0, # for Dunhuang, in cm for corsika
                         obsplane = "gp",
                         inclination=np.deg2rad(61.60523), # for Dunhuang
-                        Rmin=0., Rmax=50000., n_rings=20, # for positions in starshape
+                        Rmin=0., Rmax=50000., n_rings=20, # for positions in starshape in cm
                         arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape
                         vxB_plot=True
                         ):
@@ -129,7 +129,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                 
             # transform the station positions to vxB system for plot
             shower_plane_system = cst.transform_to_vxB_vxvxB(np.array(station_positions_groundsystem))
-            print(shower_plane_system[0:10])
+            # print(shower_plane_system[0:10])
          
             for i in range(len(shower_plane_system)):
                 # save the generated starshapes to the antenna.list file
