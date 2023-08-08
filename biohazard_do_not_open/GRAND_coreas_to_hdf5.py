@@ -403,7 +403,7 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
 
             # convert CORSIKA to AUGER coordinates (AUGER y = CORSIKA x, AUGER x = - CORSIKA y; cm to m
             # antenna_position[i, 0], antenna_position[i, 1], antenna_position[i, 2] = -position[1] / 100., position[0] / 100., position[2] / 100.
-            antenna_position[i, 0], antenna_position[i, 1], antenna_position[i, 2] = position[0] / 100., position[1] / 100., position[2] / 100.
+            antenna_position[i, 0], antenna_position[i, 1], antenna_position[i, 2] = position[0], position[1], position[2]
 
             if np.sum(np.isnan(data[:, 1:4])):
                 print("ERROR in antenna %j, time trace contains NaN" % j)

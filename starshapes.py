@@ -101,6 +101,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                                 station_positions_groundsystem.append([x, y, z])
 
                                 # save the generated starshapes to the antenna.list file
+                                # positions in cm
                                 file.write(f"AntennaPosition = {x} {y} {z} {name}\n")
 
                         # shower plane:
@@ -118,6 +119,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                                 station_positions_groundsystem.append([x, y, z])
 
                                 # save the generated starshapes to the antenna.list file
+                                # positions in cm
                                 file.write(f"AntennaPosition = {x} {y} {z} {name}\n")
                         
                         # dealing with wrong obsplanes:
@@ -139,6 +141,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
          
             for i in range(len(shower_plane_system)):
                 # save the generated starshapes to the antenna.list file
+                # positions in cm
                 file.write(f"AntennaPosition = {shower_plane_system[i, 0]} {shower_plane_system[i, 1]} {shower_plane_system[i, 2]} {name}\n")
             
             print("Saved antenna positions (in vxB_vxvxB coordinates) to file: ", "shower.list")
