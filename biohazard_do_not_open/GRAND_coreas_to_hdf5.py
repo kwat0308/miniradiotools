@@ -291,13 +291,14 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
     f_h5_inputs = f_h5['inputs']
     Bx, Bz = f_h5_inputs.attrs["MAGNET"]
     zenith = np.deg2rad(f_h5_inputs.attrs["THETAP"][0])
-    azimuth = 3 * np.pi / 2. + np.deg2rad(f_h5_inputs.attrs["PHIP"][0])  # convert to auger cs
+    # azimuth = 3 * np.pi / 2. + np.deg2rad(f_h5_inputs.attrs["PHIP"][0])  # convert to auger cs
     azimuth = rdhelp.get_normalized_angle(azimuth)
     B_inclination = np.arctan2(Bz, Bx)
     B_declination = 0
 
     B_strength = (Bx ** 2 + Bz ** 2) ** 0.5
     magnetic_field_vector = rdhelp.spherical_to_cartesian(B_inclination + np.pi / 2, B_declination + np.pi * 0.5)  # in auger cooordinates north is + 90 deg
+    magnetic_field_vector = rdhelp.spherical_to_cartesian(B_inclination, B_declination) # keep the vector in Corsika coordinates
 
     ctrans = coordinatesystems.cstrafo(zenith, azimuth, magnetic_field_vector=magnetic_field_vector)
 
@@ -393,7 +394,7 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
             # convert CORSIKA to AUGER coordinates (AUGER y = CORSIKA x, AUGER x = - CORSIKA y
             # TODO: add roation to correct north
             data = np.copy(obs_values[j])
-            data[:, 1], data[:, 2] = -obs_values[j][:, 2], obs_values[j][:, 1]
+            # data[:, 1], data[:, 2] = -obs_values[j][:, 2], obs_values[j][:, 1]
 
             # convert to SI units
             data[:, 1] *= conversion_fieldstrength_cgs_to_SI
