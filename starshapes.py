@@ -79,21 +79,6 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     rs = np.linspace(Rmin, Rmax, n_rings + 1)
 
 
-    '''if vxB_plot==True:
-        # open the shower.list file to save the generated starshapes to
-        with open("shower.list", "w") as file:
-                for i in np.arange(1, n_rings + 1):
-                        for j in np.arange(len(arm_orientations)):
-                                station_position = rs[i] * spherical_to_cartesian(np.pi * 0.5, arm_orientations[j])
-                                name = "pos_%i_%i_%.0f_%s" % (rs[i], np.rad2deg(arm_orientations[j]), obslevel, obsplane)
-
-                                x, y, z = station_position
-                                # save the generated starshapes to the antenna.list file
-                                file.write(f"AntennaPosition = {x} {y} {z} {name}\n")
-
-                print("Saved antenna positions (in vxB_vxvxB coordinates) to file: ", "shower.list")'''
-
-
     # open the antenna.list file to save the generated starshapes to
     with open(filename, "w") as file:
         for i in np.arange(1, n_rings + 1): # loop over number of antenna rings
