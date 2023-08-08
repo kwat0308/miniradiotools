@@ -73,20 +73,22 @@ if __name__ == "__main__":
 
     # plot 2D
     plt.title(fname + title + " 2D")
-    plt.scatter(x, y, color = "hotpink")
+    plt.scatter(x / 100, y / 100, color = "hotpink")
     plt.savefig(savename + "_2D.png", dpi = 300)
+    plt.xlabel('x for gp / vxB for sp [m]', fontsize=10)
+    plt.ylabel(' y for gp / vxvxB for sp [m]', fontsize=10)
     plt.close()
 
     # plot 3D
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
     plt.title(fname + title + " 3D")
-    ax.scatter(x, y, z, color="hotpink")
+    ax.scatter(x / 100, y / 100, z / 100, color="hotpink")
 
     # axis labels
-    ax.set_xlabel('vxB [cm]', fontsize=10, rotation=150)
-    ax.set_ylabel('vxvxB [cm]', fontsize=10)
-    ax.set_zlabel('v[cm]', fontsize=10, rotation=60)
+    ax.set_xlabel('x for gp / vxB for sp [m]', fontsize=10, rotation=150)
+    ax.set_ylabel('y for gp / vxvxB for sp [m]', fontsize=10)
+    ax.set_zlabel('z for gp / v for sp [m]', fontsize=10, rotation=60)
 
     plt.savefig(savename + "_3D.png", dpi = 300)
     # show the 3D interactive plot
