@@ -297,7 +297,7 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
     B_declination = 0
 
     B_strength = (Bx ** 2 + Bz ** 2) ** 0.5
-    magnetic_field_vector = rdhelp.spherical_to_cartesian(B_inclination + np.pi / 2, B_declination + np.pi * 0.5)  # in auger cooordinates north is + 90 deg
+    # magnetic_field_vector = rdhelp.spherical_to_cartesian(B_inclination + np.pi / 2, B_declination + np.pi * 0.5)  # in auger cooordinates north is + 90 deg
     magnetic_field_vector = rdhelp.spherical_to_cartesian(B_inclination, B_declination) # keep the vector in Corsika coordinates
 
     ctrans = coordinatesystems.cstrafo(zenith, azimuth, magnetic_field_vector=magnetic_field_vector)
@@ -340,7 +340,7 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
     index = np.array(range(len(observers.keys())))
 
     for plane in planes_unique:
-        observation_height = f_h5_reas.attrs["CoreCoordinateVertical"] * 1e-2  # conversion to m
+        observation_height = f_h5_reas.attrs["CoreCoordinateVertical"]
         try:
             observation_height = float(plane.split("_")[0])
         except:
@@ -536,7 +536,7 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
 
         # shift antenna positions to core position of observation level
         # compute translation in x and y
-        core = np.array([-1 * f_h5_reas.attrs["CoreCoordinateWest"], f_h5_reas.attrs["CoreCoordinateNorth"], f_h5_reas.attrs["CoreCoordinateVertical"]]) * 1e-2
+        core = np.array([f_h5_reas.attrs["CoreCoordinateNorth"], f_h5_reas.attrs["CoreCoordinateWest"], f_h5_reas.attrs["CoreCoordinateVertical"]])
         r = np.tan(zenith) * (observation_height - core[2])
         deltax = np.cos(azimuth) * r
         deltay = np.sin(azimuth) * r
@@ -564,7 +564,7 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
 
         az = rdhelp.get_normalized_angle(np.round(np.rad2deg(np.arctan2(yy, xx))), degree=True)
         mask = (az == 90)
-        if np.sum(mask) > 5:  # check if simulation is star pattern simultion
+        if np.sum(mask) > 5:  # check if simulation is star pattern simulation
             dd = yy[mask]
             sortmask = np.argsort(dd)  # for the numerical integration, the datapoints needs to be sorted by distance
             dd = dd[sortmask]
