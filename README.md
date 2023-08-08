@@ -18,6 +18,9 @@ Magnetic field parameters can be looked up here: https://www.ngdc.noaa.gov/geoma
 Plots antenna positions from *antenna.list* files with the structure:\
 *AntennaPosition = {x} {y} {z} {name}*
 
+### plot_traces.py
+Plots efield traces from **.dat* files produced by Coreas (or with the same structure).
+
 ### starshapes.py
 Generates antennas in starshape positions for groundplane or showerplane.
 
@@ -29,7 +32,7 @@ Calculates energy fluence.
 
 ## How to run
 ### antenna_plotter.py
-In order to run the *antenna_plotter.py*,
+In order to run the *antenna_plotter.py*,\
 You can either enter the path of the directory containing a single (!) *antenna.list* file:\
 *python antenna_plotter.py --dir <path_to_dir>*
 
@@ -48,6 +51,16 @@ You can get a detailed description of the options by entering\
 *python antenna_plotter.py -h*\
 or\
 *python antenna_plotter.py --help*
+
+### plot_traces.py
+In order to run *plot_traces.py*,\
+Specify the trace file:\
+*python plot_trace.py --path <path_to_trace.dat>*
+
+Additional optional parameters are:\
+*--plotname*, which specifies the name of the plot\
+and\
+*--out*, which specifies the output directory of the created plot.
 
 
 ### starshapes.py
