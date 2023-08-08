@@ -55,8 +55,8 @@ class cstransform():
     """
 
     def __init__(self, zenith, azimuth, 
-                 declination=np.deg2rad(0.12532), # default for Dunhuang
                  inclination=np.deg2rad(61.60523), # default for Dunhuang
+                 declination=np.deg2rad(0.12532), # default for Dunhuang
                  magnetic_field_vector=None):
         
         """ Initialization with signal/air-shower direction and magnetic field configuration.
