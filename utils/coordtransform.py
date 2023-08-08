@@ -55,8 +55,8 @@ class cstransform():
     """
 
     def __init__(self, zenith, azimuth, 
-                 declination=np.deg2rad(0.12532), # for Dunhuang
-                 inclination=np.deg2rad(61.60523), # for Dunhuang
+                 declination=np.deg2rad(0.12532), # default for Dunhuang
+                 inclination=np.deg2rad(61.60523), # default for Dunhuang
                  magnetic_field_vector=None):
         
         """ Initialization with signal/air-shower direction and magnetic field configuration.
@@ -65,17 +65,17 @@ class cstransform():
 
         Parameters
         ----------
-        zenith : float
-            zenith angle of the incoming signal/air-shower direction (0 deg is pointing to the zenith)
-        azimuth : float
+        zenith : float (in radians)
+            zenith angle of the incoming signal/air-shower direction (0 deg is pointing upwards)
+        azimuth : float (in radians)
             azimuth angle of the incoming signal/air-shower direction (0 deg is North, 90 deg is West)
-        inclination : float
-            Inclination of the magnetic field.
+        inclination : float (in radians)
+            Inclination of the magnetic field
             It describes the angle between the Earth's surface and the magnetic field lines.
             The default value is given for GRAND's Dunhuang site
-        declination : float
-            Declination of the magnetic field.
-            It describes the angle between the magnetic north of a compass and the true north.
+        declination : float (in radians)
+            Declination of the magnetic field
+            It describes the angle between the magnetic north of a compass and geographic north.
             The default value is given for GRAND's Dunhuang site
         
         magnetic_field_vector (optional): 3-vector, default None

@@ -11,35 +11,37 @@ from utils.coordtransform import spherical_to_cartesian
 import sys
 
 def create_stshp_list(zenith, azimuth, filename="antenna.list", 
-                        obslevel=156400.0, # for Dunhuang, in cm for corsika
+                        obslevel=156400.0, # default for Dunhuang, in cm for corsika
                         obsplane = "gp",
-                        inclination=np.deg2rad(61.60523), # for Dunhuang
+                        inclination=61.60523, # default for Dunhuang
                         Rmin=0., Rmax=50000., n_rings=20, # for positions in starshape in cm
-                        arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape
+                        arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape in degrees
                         vxB_plot=True
                         ):
 
     """
     Parameters
     ----------
-    zenith : float (in degrees)
-            zenith angle of the incoming signal/air-shower direction (0 deg is pointing vertically upwards)
-    azimuth : float (in degrees)
-            azimuth angle of the incoming signal/air-shower direction (0 deg is North, 90 deg is West)
-    filename: string
-            should have the extension ".list"
-            If the file is supposed to be used with the 
-            radio_mpi Corsika generator (https://github.com/fedbont94/Horeka/tree/radio_mpi),
-            keep the default filename.
-    obsplane : string
-            possible options are:
-                "gp" for antenna positions in the ground plane
-                "sp" for antenna positions in the shower plane, in the air
-    inclination : float (in rad)
-            can be typed as np.deg2rad(<deg>)
-            Inclination of the magnetic field.
-            It describes the angle between the Earth's surface and the magnetic field lines.
-            The default value is given for GRAND's Dunhuang site
+    zenith :  float (in degrees)
+             zenith angle of the incoming signal/air-shower direction (0 deg is pointing vertically upwards)
+             Is converted to radians immediately
+    azimuth :  float (in degrees)
+              azimuth angle of the incoming signal/air-shower direction (0 deg is North, 90 deg is West)
+              Is converted to radians immediately
+    filename:  string
+              should have the extension ".list"
+              If the file is supposed to be used with the 
+              radio_mpi Corsika generator (https://github.com/fedbont94/Horeka/tree/radio_mpi),
+              keep the default filename.
+    obsplane :  string
+               possible options are:
+                  "gp" for antenna positions in the ground plane
+                  "sp" for antenna positions in the shower plane, in the air
+    inclination :  float (in degrees)
+                  Inclination of the magnetic field.
+                  It describes the angle between the Earth's surface and the magnetic field lines.
+                  The default value is given for GRAND's Dunhuang site
+                  Is converted to radians immediately
 
     Rmin, Rmax, n_rings, arm_orientations : used to calculate the positions of the antennas on the arms of the starshape
             Do not change unless you know what you are doing!
@@ -51,11 +53,14 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     # convert to rad for numpy calculations
     zenith = np.deg2rad(zenith)
     azimuth = np.deg2rad(azimuth)
+    # definition of these are in coordtransform.py
+    inclination = np.deg2rad(inclination) # default value is for Dunhuang
+    declination = np.deg2rad(0.12532) # default value is for Dunhuang
 
     # define coordinate system transformations
     cst = cstransform(zenith = zenith,
                       azimuth= azimuth,
-                      declination=np.deg2rad(0.12532), # for Dunhuang
+                      declination=declination, # for Dunhuang
                       inclination=inclination # for Dunhuang
                       )
 
