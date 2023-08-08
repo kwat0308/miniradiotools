@@ -89,9 +89,9 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                         # ground plane:
                         if obsplane == "gp":
                                 pos_2d = cst.transform_from_vxB_vxvxB_2D(station_position)  # position if height in observer plane should be zero
-                                pos_2d[0] += dx
-                                pos_2d[1] += dy
-                                x, y, z = pos_2d[1], -1*pos_2d[0], obslevel
+                                # pos_2d[0] += dx
+                                # pos_2d[1] += dy
+                                x, y, z = pos_2d[1], (-1) * pos_2d[0], obslevel
 
                                 station_positions_groundsystem.append([x, y, z])
 
@@ -101,9 +101,9 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                         # shower plane:
                         elif obsplane == "sp":
                                 pos = cst.transform_from_vxB_vxvxB(station_position)
-                                pos[0] += dx
-                                pos[1] += dy
-                                x, y, z = pos[1], -1*pos[0], (pos[2] + obslevel)
+                                # pos[0] += dx
+                                # pos[1] += dy
+                                x, y, z = pos[1], (-1) * pos[0], (pos[2] + obslevel)
 
                                 station_positions_groundsystem.append([x, y, z])
 
