@@ -77,11 +77,13 @@ if __name__ == "__main__":
     plt.savefig(savename + "_2D.png", dpi = 300)
     plt.xlabel('x for gp / vxB for sp [m]', fontsize=10)
     plt.ylabel(' y for gp / vxvxB for sp [m]', fontsize=10)
+    plt.axes().set_aspect('equal')
     plt.close()
 
     # plot 3D
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
+    # sets aspect ratio for all plots to 1 (quadratic frame)
     plt.title(fname + title + " 3D")
     ax.scatter(x / 100, y / 100, z / 100, color="hotpink")
 
@@ -89,6 +91,7 @@ if __name__ == "__main__":
     ax.set_xlabel('x for gp / vxB for sp [m]', fontsize=10, rotation=150)
     ax.set_ylabel('y for gp / vxvxB for sp [m]', fontsize=10)
     ax.set_zlabel('z for gp / v for sp [m]', fontsize=10, rotation=60)
+    ax.set_aspect('equal')
 
     plt.savefig(savename + "_3D.png", dpi = 300)
     # show the 3D interactive plot
