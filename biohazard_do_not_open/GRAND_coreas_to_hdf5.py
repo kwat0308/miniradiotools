@@ -173,11 +173,17 @@ def read_antenna_data(hdf5_file, list_file, antenna_folder):
 
     observers = hdf5_file.create_group('observers')
 
+    # loop to write antenna position, label and data into the hdf5
+    # write the antenna data into the data set
+    # and assign positions and label to the data set
+    # IMPORTANT: order changes automatically bc of weird hdf5 ordering system
     for line in lines:
+        
         ll = line.strip().split()
         antenna_position = ll[2:5]
         antenna_label = ll[5]
         antenna_file = os.path.join(antenna_folder, "raw_%s.dat" % antenna_label)
+
 
         data = np.genfromtxt(antenna_file)
         data_set = observers.create_dataset(antenna_label, data.shape, dtype=np.float)
@@ -185,11 +191,12 @@ def read_antenna_data(hdf5_file, list_file, antenna_folder):
 
         data_set.attrs['position'] = np.array(antenna_position, dtype=np.float)
         data_set.attrs['name'] = antenna_label
-
+ 
         # there seems to be a problem when storing a list of unicodes in an attribute (is the case for python3). followed the fix from:
         # https://github.com/h5py/h5py/issues/289
         if (len(ll) > 6):
             data_set.attrs['additional_arguments'] =  [a.encode('utf8') for a in ll[6:]]
+        
 
 
 def write_coreas_hdf5_file(reas_filename, output_filename, f_h5=None):
@@ -292,6 +299,7 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
     Bx, Bz = f_h5_inputs.attrs["MAGNET"]
     zenith = np.deg2rad(f_h5_inputs.attrs["THETAP"][0])
     # azimuth = 3 * np.pi / 2. + np.deg2rad(f_h5_inputs.attrs["PHIP"][0])  # convert to auger cs
+    azimuth = np.deg2rad(f_h5_inputs.attrs["PHIP"][0])  # keep coordinate system the same
     azimuth = rdhelp.get_normalized_angle(azimuth)
     B_inclination = np.arctan2(Bz, Bx)
     B_declination = 0
