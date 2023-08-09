@@ -3,8 +3,6 @@ import numpy as np
 
 import matplotlib as mpl
 from matplotlib import rc
-from cycler import cycler
-import cmasher as cmr
 import glob
 from optparse import OptionParser
 import sys
@@ -14,13 +12,8 @@ mpl.rcParams['lines.markersize'] = 5
 rc('font', **{'family':'serif','serif':['Palatino']})
 rc('text', usetex = True)
 
-
-# my colors
+# dark plots:
 # plt.style.use("dark_background")
-n = 3 # Number of colors
-new_colors = [plt.get_cmap('cmr.bubblegum_r')(1. * i/n) for i in range(n)]
-mpl.rcParams['axes.prop_cycle'] = cycler('color', new_colors)
-
 
 parser = OptionParser()
 parser.add_option("--path", "-p", "--file", "-f", type="str", dest="file", metavar="FILE",
@@ -52,9 +45,9 @@ if __name__ == "__main__":
     z = trace[:,3]
 
     plt.title(plotname)
-    plt.plot(time, x, label="x")
-    plt.plot(time, y, label="y")
-    plt.plot(time, z, label="z")
+    plt.plot(time, x, color="hotpink", label="x")
+    plt.plot(time, y, color="mediumorchid", label="y")
+    plt.plot(time, z, color="skyblue", label="z")
     plt.legend()
     plt.xlabel("time in ns")
     plt.ylabel("efield in cgs")
