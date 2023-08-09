@@ -11,11 +11,11 @@ from utils.coordtransform import spherical_to_cartesian
 import sys
 
 def create_stshp_list(zenith, azimuth, filename="antenna.list", 
-                        obslevel=156400.0, # default for Dunhuang, in cm for corsika
+                        obslevel=156400.0, # default for Dunhuang, !!in cm!!
                         obsplane = "gp",
-                        inclination=61.60523, # default for Dunhuang
-                        Rmin=0., Rmax=50000., n_rings=20, # for positions in starshape in cm
-                        arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape in degrees
+                        inclination=61.60523, # default for Dunhuang (in degrees)
+                        Rmin=0., Rmax=50000., n_rings=20, # for positions in starshape !!in cm!!
+                        arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape (in degrees)
                         vxB_plot=True
                         ):
 
@@ -33,7 +33,9 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
               If the file is supposed to be used with the 
               radio_mpi Corsika generator (https://github.com/fedbont94/Horeka/tree/radio_mpi),
               keep the default filename.
-    obsplane :  string
+    obslevel:  float (!!in cm!!)
+              Observation level of the detector. 
+    obsplane:  string
                possible options are:
                   "gp" for antenna positions in the ground plane
                   "sp" for antenna positions in the shower plane, in the air
@@ -43,17 +45,18 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                   The default value is given for GRAND's Dunhuang site
                   Is converted to radians immediately
 
-    Rmin, Rmax, n_rings, arm_orientations : used to calculate the positions of the antennas on the arms of the starshape
+    Rmin, Rmax, n_rings, arm_orientations : used to calculate the positions of the antennas on the arms of the starshape !!in cm!!
             Do not change unless you know what you are doing!
     """
-    print("Generating antenna positions in ", obsplane)
-    print("zenith: ", zenith)
-    print("azimuth: ", azimuth)
+    print(f"Generating antenna positions in {obsplane} at {obslevel} cm.")
+    print(f"zenith: {zenith} degrees - in Corsika convention")
+    print(f"azimuth: {azimuth} degrees - in Corsika convention")
 
-    # convert to rad for numpy calculations
+    # convert to rad for numpy calculations, change azimuth to Auger convention (for radiotools)
     zenith = np.deg2rad(zenith)
-    azimuth = np.deg2rad(azimuth)
-    # definition of these are in coordtransform.py
+    azimuth = np.deg2rad(azimuth + 270) # add 270 degrees for Auger conventions
+
+    # definition of inclination and declination are in coordtransform.py
     inclination = np.deg2rad(inclination) # default value is for Dunhuang
     declination = np.deg2rad(0.12532) # default value is for Dunhuang
 
