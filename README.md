@@ -5,6 +5,7 @@ Welcome to the miniradiotools package! It is a minimalistic python package for t
 Since miniradiotools is meant to be used with CORSIKA (https://web.iap.kit.edu/corsika/usersguide/usersguide.pdf) and its radio extension CoREAS (https://web.ikp.kit.edu/huege/downloads/coreas-manual.pdf), it uses CORSIKA conventions.
 
 It's inspired by the radiotools package: https://github.com/nu-radio/radiotools/
+which uses Auger conventions.
 
 
 ## Input Parameters
@@ -69,7 +70,7 @@ Using *ipython* or another python script, call the function
 **create_stshp_list**(\
     zenith, azimuth, filename="*antenna.list*", \
     obslevel=156400.0, # for Dunhuang, in cm for corsika\
-    obsplane = "showerplane",\
+    obsplane = "sp",\
     inclination=np.deg2rad(61.60523), # for Dunhuang\
     Rmin=0., Rmax=500., n_rings=20, # for positions in starshape\
     azimuths=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]) # for positions in starshape\
