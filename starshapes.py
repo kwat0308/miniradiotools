@@ -29,17 +29,20 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     azimuth :  float (in degrees)
               azimuth angle of the incoming signal/air-shower direction (0 deg is North, 90 deg is West)
               Is converted to radians immediately
-    filename:  string
-              should have the extension ".list"
-              If the file is supposed to be used with the 
-              radio_mpi Corsika generator (https://github.com/fedbont94/Horeka/tree/radio_mpi),
-              keep the default filename.
-    obslevel:  float (!!in cm!!)
-              Observation level of the detector. 
-    obsplane:  string
+    filename :  string
+               should have the extension ".list"
+               If the file is supposed to be used with the 
+               radio_mpi Corsika generator (https://github.com/fedbont94/Horeka/tree/radio_mpi),
+               keep the default filename.
+    obslevel :  float (!!in cm!!)
+               Observation level of the detector. 
+    obsplane :  string
                possible options are:
                   "gp" for antenna positions in the ground plane
                   "sp" for antenna positions in the shower plane, in the air
+    Auger_input : bool (default is False)
+                 True -> you are providing input in Auger coordinates
+                 False -> you are providing input in Corsika coordinates
     inclination :  float (in degrees)
                   Inclination of the magnetic field.
                   It describes the angle between the Earth's surface and the magnetic field lines.
