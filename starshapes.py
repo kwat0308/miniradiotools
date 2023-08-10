@@ -160,7 +160,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                                 sp_position = np.dot(rotation_z_axis, sp_position)
 
                                 # write all station positions into list for later conversion to shower plane coordinates
-                                station_positions_groundsystem.append([sp_position])
+                                station_positions_groundsystem.append(sp_position)
 
                                 # save the generated starshapes to the antenna.list file
                                 # positions in cm
