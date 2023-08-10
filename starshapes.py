@@ -35,11 +35,11 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                radio_mpi Corsika generator (https://github.com/fedbont94/Horeka/tree/radio_mpi),
                keep the default filename.
     obslevel :  float (!!in cm!!)
-               Observation level of the detector. 
+               Observation level of the detector in the vertical direction
     obsplane :  string
                possible options are:
-                  "gp" for antenna positions in the ground plane
-                  "sp" for antenna positions in the shower plane, in the air
+                  "gp" for antennas positioned on the ground plane
+                  "sp" for antennas positioned in the shower plane, in the air
     Auger_input : bool (default is False)
                  True -> you are providing input in Auger coordinates
                  False -> you are providing input in Corsika coordinates
@@ -59,7 +59,18 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
     # convert to rad for numpy calculations, change azimuth to Auger convention (for radiotools)
     zenith = np.deg2rad(zenith)
-    azimuth = np.deg2rad(azimuth) # add 270 degrees for Auger conventions
+    azimuth = np.deg2rad(azimuth)
+
+    # definition of inclination and declination are in coordtransform.py
+    inclination = np.deg2rad(inclination) # default value is for Dunhuang
+    declination = np.deg2rad(0.12532) # default value is for Dunhuang
+
+    # compute the B field
+    # is this also in Auger coordinates?
+    B_field = np.array([np.cos(inclination), 0, -np.sin(inclination)])
+    
+    print("B-vector from starshapes", B_field)
+
 
     # define angle for Auger rotation 
     # set as 0 degrees if you want normal Corsika input
@@ -70,20 +81,25 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
     # rotation matrix for transformation between Auger and Corsika coordinate system
     # rotation matrix for rotation around z-axis
-    Rotation_z_axis = np.array([[np.cos(rot_angle),  (-1) * np.sin(rot_angle), 0], \
+    rotation_z_axis = np.array([[np.cos(rot_angle),  (-1) * np.sin(rot_angle), 0], \
                       [np.sin(rot_angle), np.cos(rot_angle), 0], \
                       [0, 0, 1]])
+    
+    # inverse rotation matrix for magnetic field vector
+    inverse_rotation = np.linalg.inv(rotation_z_axis)
+    
+    # rotate magnetic field vector vertical axis in opposite direction of station coordinates
+    # depends on Auger_input
+    B_field = np.dot(inverse_rotation, B_field)
 
 
-    # definition of inclination and declination are in coordtransform.py
-    inclination = np.deg2rad(inclination) # default value is for Dunhuang
-    declination = np.deg2rad(0.12532) # default value is for Dunhuang
 
     # define coordinate system transformations
     cst = cstransform(zenith = zenith,
                       azimuth= azimuth,
                       declination=declination, # for Dunhuang
-                      inclination=inclination # for Dunhuang
+                      inclination=inclination,
+                      magnetic_field_vector=B_field # for Dunhuang
                       )
 
     # compute translation in x and y
@@ -93,9 +109,6 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
     # array to save all station positions in
     station_positions_groundsystem = []
-
-    # compute the B field
-    B = np.array([0, np.cos(inclination), -np.sin(inclination)])
 
     # rs = radius slices?
     rs = np.linspace(Rmin, Rmax, n_rings + 1)
@@ -122,7 +135,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
                                 # apply rotation matrix to stations
                                 # Corsika input will stay the same, Auger input will be rotated by -90 degrees
-                                gp_position = np.dot(Rotation_z_axis, gp_position)
+                                gp_position = np.dot(rotation_z_axis, gp_position)
 
                                 # write all station positions into list for later conversion to shower plane coordinates
                                 station_positions_groundsystem.append(gp_position)
@@ -144,7 +157,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
                                 # apply rotation matrix to stations
                                 # Corsika input will stay the same, Auger input will be rotated by -90 degrees
-                                sp_position = np.dot(Rotation_z_axis, sp_position)
+                                sp_position = np.dot(rotation_z_axis, sp_position)
 
                                 # write all station positions into list for later conversion to shower plane coordinates
                                 station_positions_groundsystem.append([sp_position])
