@@ -91,9 +91,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     # rotate magnetic field vector vertical axis in opposite direction of station coordinates
     # depends on Auger_input
     B_field = np.dot(inverse_rotation, B_field)
-
-
-
+    
     # define coordinate system transformations
     cst = cstransform(zenith = zenith,
                       azimuth= azimuth,
