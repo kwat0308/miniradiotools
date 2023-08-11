@@ -53,10 +53,6 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
             Do not change unless you know what you are doing!
     """
 
-    print(f"Generating antenna positions in {obsplane} at {obslevel} cm.")
-    print(f"zenith: {zenith} degrees - in Corsika convention")
-    print(f"azimuth: {azimuth - 180} degrees - in Corsika convention")
-
     # convert to rad for numpy calculations
     zenith = np.deg2rad(zenith)
     azimuth = np.deg2rad(azimuth)
@@ -67,7 +63,10 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
     # compute the B field in Corsika system (x direction = North, y direction = West)
     B_field = np.array([np.cos(inclination), 0, -np.sin(inclination)])
-    
+
+    # print information about input processing
+    print(f"Generating antenna positions in {obsplane} at {obslevel} cm.")
+    print(f"zenith: {np.rad2deg(zenith)} degrees - in Corsika convention")
 
     # define angle for Auger rotation 
     # set as 0 degrees if you want normal Corsika input
@@ -75,8 +74,21 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     # so: x direction = East, y direction = North
     if Auger_input == True:
           rot_angle = np.deg2rad(270)
-    else:
+          # print Corsika input angle for Auger input
+          print(f"azimuth: {np.rad2deg(azimuth) - 270} degrees - in Corsika convention")
+
+    elif Auger_input == False:
           rot_angle = 0
+          # print Corsika input angle
+          print(f"azimuth: {np.rad2deg(azimuth) - 180} degrees - in Corsika convention")
+
+    
+    else:  # dealing with wrong input choices:
+        sys.exit("Invalid input. Possible options for Auger_input are 'True' or 'False'. \n Quitting...")
+
+
+    print("These are the angles that should go into the Corsika input file!!!")
+
 
     # rotation matrix for transformation between Auger and Corsika coordinate system
     # rotation matrix for rotation around z-axis
