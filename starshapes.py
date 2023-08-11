@@ -13,7 +13,7 @@ import sys
 def create_stshp_list(zenith, azimuth, filename="antenna.list", 
                         obslevel=156400.0, # default for Dunhuang, !!in cm!!
                         obsplane = "gp",
-                        Auger_input = False, 
+                        Auger_input = True, 
                         inclination=61.60523, # default for Dunhuang (in degrees)
                         Rmin=0., Rmax=50000., n_rings=20, # for positions in starshape !!in cm!!
                         arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape (in degrees)
