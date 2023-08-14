@@ -299,7 +299,7 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
     Bx, Bz = f_h5_inputs.attrs["MAGNET"]
     zenith = np.deg2rad(f_h5_inputs.attrs["THETAP"][0])
     # azimuth = 3 * np.pi / 2. + np.deg2rad(f_h5_inputs.attrs["PHIP"][0])  # convert to auger cs
-    azimuth = np.deg2rad(f_h5_inputs.attrs["PHIP"][0])  # keep coordinate system the same
+    azimuth = np.pi + np.deg2rad(f_h5_inputs.attrs["PHIP"][0])  # keep coordinate system the same
     azimuth = rdhelp.get_normalized_angle(azimuth)
     B_inclination = np.arctan2(Bz, Bx)
     B_declination = 0
@@ -411,7 +411,7 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
 
             # convert CORSIKA to AUGER coordinates (AUGER y = CORSIKA x, AUGER x = - CORSIKA y; cm to m
             # antenna_position[i, 0], antenna_position[i, 1], antenna_position[i, 2] = -position[1] / 100., position[0] / 100., position[2] / 100.
-            antenna_position[i, 0], antenna_position[i, 1], antenna_position[i, 2] = position[0], position[1], position[2]
+            antenna_position[i, 0], antenna_position[i, 1], antenna_position[i, 2] = position[0] / 100, position[1] / 100, position[2] / 100
 
             if np.sum(np.isnan(data[:, 1:4])):
                 print("ERROR in antenna %j, time trace contains NaN" % j)
@@ -544,12 +544,12 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
 
         # shift antenna positions to core position of observation level
         # compute translation in x and y
-        core = np.array([f_h5_reas.attrs["CoreCoordinateNorth"], f_h5_reas.attrs["CoreCoordinateWest"], f_h5_reas.attrs["CoreCoordinateVertical"]])
+        core = np.array([f_h5_reas.attrs["CoreCoordinateNorth"], f_h5_reas.attrs["CoreCoordinateWest"], f_h5_reas.attrs["CoreCoordinateVertical"]]) / 100
         r = np.tan(zenith) * (observation_height - core[2])
         deltax = np.cos(azimuth) * r
         deltay = np.sin(azimuth) * r
-        antenna_position[..., 0] -= deltax
-        antenna_position[..., 1] -= deltay
+        # antenna_position[..., 0] -= deltax
+        # antenna_position[..., 1] -= deltay
         if r > 1:
             print("\tshifting antenna positions by x = %.1f, y =  %.1f" % (deltax, deltay))
 
