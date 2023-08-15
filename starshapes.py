@@ -61,10 +61,6 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     inclination = np.deg2rad(inclination) # default value is for Dunhuang
     declination = np.deg2rad(0.12532) # default value is for Dunhuang
 
-    # compute the B field in Corsika system (x direction = North, y direction = West)
-    B_field = np.array([np.cos(inclination), 0, -np.sin(inclination)])
-    print(B_field)
-
     # print information about input processing
     print(f"Generating antenna positions in {obsplane} at {obslevel} cm.")
     print(f"zenith: {np.rad2deg(zenith)} degrees - in Corsika convention")
@@ -75,13 +71,24 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     # so: x direction = East, y direction = North
     if Auger_input == True:
           rot_angle = np.deg2rad(270)
+          # for Auger input, set magnetic field inclination to Auger value
+          inclination = np.deg2rad(-35.7324)
+
+          # save corsika azimuth angle for output
+          corsika_azimuth = np.round(np.rad2deg(azimuth) - 270, decimals=2)
           # print Corsika input angle for Auger input
-          print(f"azimuth: {np.rad2deg(azimuth) - 270} degrees - in Corsika convention")
+          print(f"azimuth: {corsika_azimuth} degrees - in Corsika convention")
+
 
     elif Auger_input == False:
           rot_angle = 0
+          # for GRAND input, set magnetic field inclination to GRAND GP13 value
+          inclination = np.deg2rad(61.60523)
+
+          # save corsika azimuth angle for output
+          corsika_azimuth = np.round(np.rad2deg(azimuth) - 180, decimals=2)
           # print Corsika input angle
-          print(f"azimuth: {np.rad2deg(azimuth) - 180} degrees - in Corsika convention")
+          print(f"azimuth: {corsika_azimuth} degrees - in Corsika convention")
 
     
     else:  # dealing with wrong input choices:
@@ -99,10 +106,16 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     
     # inverse rotation matrix for magnetic field vector
     inverse_rotation = np.linalg.inv(rotation_z_axis)
+
+
+    # compute the B field in Corsika system (x direction = North, y direction = West)
+    B_field = np.array([np.cos(inclination), 0, -np.sin(inclination)])
+    print(B_field)
     
     # rotate magnetic field vector vertical axis in opposite direction of station coordinates
     # depends on Auger_input
     B_field = np.dot(inverse_rotation, B_field)
+
     
     # define coordinate system transformations
     cst = cstransform(zenith = zenith,
@@ -198,3 +211,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                 file.write(f"AntennaPosition = {shower_plane_system[i, 0]} {shower_plane_system[i, 1]} {shower_plane_system[i, 2]} {name}\n")
             
             print("Saved antenna positions (in vxB_vxvxB coordinates) to file: ", "shower.list")
+
+
+    # return corsika azimuth angle to for automatically generating corsika input files with the right values
+    return corsika_azimuth
