@@ -62,7 +62,8 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     declination = np.deg2rad(0.12532) # default value is for Dunhuang
 
     # compute the B field in Corsika system (x direction = North, y direction = West)
-    B_field = np.array([np.cos(inclination), 0, -np.sin(inclination)])
+    B_field = np.array([np.cos(inclination), 0, np.sin(inclination)])
+    print(B_field)
 
     # print information about input processing
     print(f"Generating antenna positions in {obsplane} at {obslevel} cm.")
