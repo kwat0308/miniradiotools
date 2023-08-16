@@ -119,7 +119,6 @@ if __name__ == "__main__":
     freqband = sys.argv[3] #frequency band of hdf5
     # pltname = sys.argv[4] #name for plot
     zen = sys.argv[4] #zenith
-    print("hello")
     # if fname[-14:] != "highlevel.hdf5":
     #     sys.exit("Input is not a *highlevel.hdf5 file. Please execute the file as the following:"
     #              "python read_highlevel_hdf5.py SIM*_highlevel.hdf5")
@@ -135,7 +134,6 @@ if __name__ == "__main__":
     a1=antenna_position[:,1]
     a2=antenna_position[:,2]
 
-    print("hello2")
     # total fluence
     y_total = np.array([(energy_fluence[i, 0] + energy_fluence[i, 1] + energy_fluence[i, 2]) for i in range(len(energy_fluence))])
     # vxB fluence
@@ -153,17 +151,15 @@ if __name__ == "__main__":
     d1 = antenna_position_vBvvB[:,1]
     d2 = antenna_position_vBvvB[:,2]
 
-    print(antenna_position_vBvvB)
-    print(antenna_position)
     
     # print(len(y_total)) #240
     # print(len(d0)) #240
 
     plt.plot(d0, y_total, ".", label="d0")
     plt.plot(d1, y_total, ".", label="d1")
-    plt.show()
+    plt.savefig(fname+"antenna_position_vBvvB.png")
+    plt.close()
 
-    # quit()
 
     # start setting up the plot
     labelsize = 13
@@ -258,7 +254,6 @@ if __name__ == "__main__":
     ######
     # save figure
     fig.tight_layout()
-    savename = "fluencemaps_" + "zen" + str(zen) + "_freq" + freqband + "_obslev" + str(obslev_radio) + ".png"
+    savename = fname + "fluencemaps_" + "zen" + str(zen) + "_freq" + freqband + "_obslev" + str(obslev_radio) + ".png"
     plt.savefig(savename, dpi=300)
-    plt.show()
     plt.close()

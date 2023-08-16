@@ -109,7 +109,7 @@ def read_reas_file(hdf5_file, reas_file):
                    "PrimaryParticleEnergy", "PrimaryParticleType", "DepthOfShowerMaximum", "DistanceOfShowerMaximum",
                    "MagneticFieldStrength", "MagneticFieldInclinationAngle"]:
             if key not in ["EventNumber", "RunNumber", "GPSSecs", "GPSNanoSecs", "PrimaryParticleType"]:
-                f_h5_reas.attrs[key] = np.float(value)
+                f_h5_reas.attrs[key] = float(value)
             else:
                 f_h5_reas.attrs[key] = int(value)
         else:
@@ -177,10 +177,10 @@ def read_antenna_data(hdf5_file, list_file, antenna_folder):
         antenna_file = os.path.join(antenna_folder, "raw_%s.dat" % antenna_label)
 
         data = np.genfromtxt(antenna_file)
-        data_set = observers.create_dataset(antenna_label, data.shape, dtype=np.float)
+        data_set = observers.create_dataset(antenna_label, data.shape, dtype=float)
         data_set[...] = data
 
-        data_set.attrs['position'] = np.array(antenna_position, dtype=np.float)
+        data_set.attrs['position'] = np.array(antenna_position, dtype=float)
         data_set.attrs['name'] = antenna_label
 
         # there seems to be a problem when storing a list of unicodes in an attribute (is the case for python3). followed the fix from:
@@ -259,7 +259,8 @@ def write_highlevel_attributes(f_h5_hl, f_h5):
     f_h5_hl.attrs["Eneutrino"] = Eneutrino
 
     # fit Gaisser Hillas to longitudinal profile anyway (fir in CORSIKA not accurate for high zenith angle)
-    print("Gaisser-Hillas Fit results could not be found in the .long file. Performing fit on longitudinal profile ...")
+    #Gaisser-Hillas Fit results could not be found in the .long file. 
+    print("Performing fit on longitudinal profile ...")
     xx = dE_data[0][:-2]
     yy = dE_data[9][:-2] * 1e-9  # sum of energy deposit in GeV
     popt, pcov = optimize.curve_fit(gaisser_hillas, xx, yy, p0=[yy.max(), 0, xx[yy.argmax()], 20])
@@ -329,9 +330,9 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
         planes_unique = np.unique(planes)
 
     if args.use_vB_vvB_polarization:
-        print("Traces are stored and all relevent quantities are determined in vxB, vxvxB, and v polarization!")
+        print("Traces are stored and all relevant quantities are determined in vxB, vxvxB, and v polarization!")
     else:
-        print("Traces are stored and all relevent quantities are determined in x, y, and z polarization!")
+        print("Traces are stored and all relevant quantities are determined in x, y, and z polarization!")
 
     index = np.array(range(len(observers.keys())))
 
@@ -417,10 +418,10 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
                 data[:, 0] = tstep * np.arange(dlength) + data[0, 0]
 
             # add zeros to beginning and end of the trace to increase the frequency resolution (this is not a resampling)
-            #n_samples = np.int(np.round(2048e-9 * 5 / tstep))
-            n_samples = np.int(np.round(1 / tstep / (args.frequencyResolution * 1e3)))
+            #n_samples = int(np.round(2048e-9 * 5 / tstep))
+            n_samples = int(np.round(1 / tstep / (args.frequencyResolution * 1e3)))
             #increase number of samples to a power of two for FFT performance reasons
-            n_samples = np.int(2**math.ceil(math.log(n_samples,2)))
+            n_samples = int(2**math.ceil(math.log(n_samples,2)))
 
             n_start = (n_samples - len(data[:, 0])) // 2
             padded_trace = np.zeros((n_samples, 3))
@@ -537,8 +538,8 @@ def write_coreas_highlevel_file(output_filename, f_h5, args, f_h5_sephl=None):
         deltay = np.sin(azimuth) * r
         # antenna_position[..., 0] -= deltax
         # antenna_position[..., 1] -= deltay
-        if r > 1:
-            print("\tshifting antenna positions by x = %.1f, y =  %.1f" % (deltax, deltay))
+        # if r > 1:
+        #     print("\tshifting antenna positions by x = %.1f, y =  %.1f" % (deltax, deltay))
 
         # calculate radiation enrergy
         core[2] = observation_height
