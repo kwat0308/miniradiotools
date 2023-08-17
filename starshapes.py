@@ -106,6 +106,8 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
     # compute the B field in Corsika system (x direction = North, y direction = West)
     B_field = np.array([np.cos(inclination), 0, -np.sin(inclination)])
+    print("Magnetic field vector: ", B_field)
+    print("Magnetic field inclination", np.rad2deg(inclination))
     
     # rotate magnetic field vector vertical axis in opposite direction of station coordinates
     # depends on Auger_input
