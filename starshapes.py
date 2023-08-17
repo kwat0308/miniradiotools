@@ -71,8 +71,6 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     # so: x direction = East, y direction = North
     if Auger_input == True:
           rot_angle = np.deg2rad(270)
-          # for Auger input, set magnetic field inclination to Auger value
-          inclination = np.deg2rad(-35.7324)
 
           # save corsika azimuth angle for output
           corsika_azimuth = np.round(np.rad2deg(azimuth) - 270, decimals=2)
@@ -82,8 +80,6 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
     elif Auger_input == False:
           rot_angle = 0
-          # for GRAND input, set magnetic field inclination to GRAND GP13 value
-          inclination = np.deg2rad(61.60523)
 
           # save corsika azimuth angle for output
           corsika_azimuth = np.round(np.rad2deg(azimuth) - 180, decimals=2)
