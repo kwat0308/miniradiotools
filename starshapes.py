@@ -13,7 +13,7 @@ import sys
 def create_stshp_list(zenith, azimuth, filename="antenna.list", 
                         obslevel=156400.0, # default for Dunhuang, !!in cm!!
                         obsplane = "gp",
-                        Auger_input = True, 
+                        Auger_CS = True, 
                         inclination=61.60523, # default for Dunhuang (in degrees)
                         Rmin=0., Rmax=50000., n_rings=20, # for positions in starshape !!in cm!!
                         arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape (in degrees)
@@ -40,7 +40,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                possible options are:
                   "gp" for antennas positioned on the ground plane
                   "sp" for antennas positioned in the shower plane, in the air
-    Auger_input : bool (default is False)
+    Auger_CS : bool (default is False)
                  True -> you are providing input in Auger coordinates
                  False -> you are providing input in Corsika coordinates
     inclination :  float (in degrees)
@@ -69,7 +69,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     # set as 0 degrees if you want normal Corsika input
     # Auger coordinates are Corsika coordinates rotated by -90 degrees
     # so: x direction = East, y direction = North
-    if Auger_input == True:
+    if Auger_CS == True:
           rot_angle = np.deg2rad(270)
 
           # save corsika azimuth angle for output
@@ -78,7 +78,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
           print(f"azimuth: {corsika_azimuth} degrees - in Corsika convention")
 
 
-    elif Auger_input == False:
+    elif Auger_CS == False:
           rot_angle = 0
 
           # save corsika azimuth angle for output
@@ -88,7 +88,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
     
     else:  # dealing with wrong input choices:
-        sys.exit("Invalid input. Possible options for Auger_input are 'True' or 'False'. \n Quitting...")
+        sys.exit("Invalid input. Possible options for Auger_CS are 'True' or 'False'. \n Quitting...")
 
 
     print("These are the angles that should go into the Corsika input file!!!")
@@ -110,7 +110,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     print("Magnetic field inclination", np.rad2deg(inclination))
     
     # rotate magnetic field vector vertical axis in opposite direction of station coordinates
-    # depends on Auger_input
+    # depends on Auger_CS
     B_field = np.dot(inverse_rotation, B_field)
 
     
