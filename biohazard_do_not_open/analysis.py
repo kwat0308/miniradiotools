@@ -13,15 +13,17 @@ from coreas_to_hdf5_mods import *
 
 parser = OptionParser()
 parser.add_option("--directory", "--dir", "-d", type="str", dest="directory",
-                  help="Specify the full path to the simulation set.")
+                  help="Specify the full path to the inp directory of the simulation set.\
+                  It assumes that the .reas files are in subdirectories of the specified one.\
+                  ")
 
 (options, args) = parser.parse_args()
 
 # TODO: read obslevel from file
-obslevel = 156400 # Dunhuang
+obslevel = "156400" # Dunhuang
 
 # TODO: read zenith from file
-zenith = 65 # in degrees
+zenith = "65" # in degrees
 
 # TODO: add frequency band as input parameter
 flow = "30"
@@ -31,7 +33,7 @@ freqband = f"{flow}-{fhigh}"
 if __name__ == '__main__':
     print(f"Searching directory {options.directory} for .reas files")
     # find .reas files with glob
-    reas_names = glob.glob(options.directory + "/**/SIM??????.reas")
+    reas_names = glob.glob(options.directory + "/SIM??????.reas")
     print(f"Found {len(reas_names)} showers to plot!")
 
     # loop over all reas files
@@ -43,16 +45,17 @@ if __name__ == '__main__':
         
         # Run coreas_to_hdf5_mods.py
         coreas_to_hdf5 = [
-            'python', 'coreas_to_hdf5_mods.py', reas_filename, '-hl', '--flow', flow, '--fhigh', fhigh, 
-            "--outputDirectory", path_to_reas
+            'python', 'coreas_to_hdf5_mods.py', str(reas_filename), '-hl', '--flow', str(flow), '--fhigh', str(fhigh), 
+            "--outputDirectory", str(path_to_reas)
         ]
         subprocess.run(coreas_to_hdf5, check=True)
         print(f"Created {reas_filename}_highlevel.hdf5")
 
         # Run fluencemap_mods.py
         fluencemap_command = [
-            'python', 'fluencemap_mods.py', output_filename_hl, obslevel, freqband, zenith
+            'python', 'fluencemap_mods.py', str(output_filename_hl), str(obslevel), str(freqband), str(zenith)
         ]
         subprocess.run(fluencemap_command, check=True)
         print(f"Plotted fluencemap for {output_filename_hl}")
 
+# TODO: skip if one shower happens to be incomplete. currently this crashes the whole process
