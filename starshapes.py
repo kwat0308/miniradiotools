@@ -9,13 +9,15 @@ import numpy as np
 from utils.coordtransform import cstransform
 from utils.coordtransform import spherical_to_cartesian
 import sys
+from radiotools.atmosphere import models
 
 def create_stshp_list(zenith, azimuth, filename="antenna.list", 
                         obslevel=156400.0, # default for Dunhuang, !!in cm!!
                         obsplane = "gp",
                         Auger_CS = True, 
                         inclination=61.60523, # default for Dunhuang (in degrees)
-                        Rmin=0., Rmax=50000., n_rings=20, # for positions in starshape !!in cm!!
+                        Rmin=0., Rmax=50000., n_rings=30, # for positions in starshape !!in cm!!
+                        rs=None, # predefined ring radii for antenna
                         arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape (in degrees)
                         vxB_plot=True
                         ):
@@ -51,6 +53,8 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
     Rmin, Rmax, n_rings, arm_orientations : used to calculate the positions of the antennas on the arms of the starshape !!in cm!!
             Do not change unless you know what you are doing!
+    rs :  array of antenna positions (in cm!)
+         predefined list of antenna positions
     """
 
     # convert to rad for numpy calculations
@@ -132,7 +136,14 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     station_positions_groundsystem = []
 
     # rs = radius slices
-    rs = np.linspace(Rmin, Rmax, n_rings + 1)
+    # check whether antenna ring radii are provided by input
+    if rs is None:
+        rs = np.linspace(Rmin, Rmax, n_rings + 1)
+
+    # if provided, add an additional antenna in the middle
+    else:
+        n_rings = len(rs)
+        rs = np.append(0, rs)
 
 
     # open the antenna.list file to save the generated starshapes to
@@ -212,3 +223,41 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
     # return corsika azimuth angle to for automatically generating corsika input files with the right values
     return corsika_azimuth
+
+
+def get_rmax(X):
+    """ returns maximum axis distance in meter for a given simulation as
+    function of the atmosphere X in g/cm2 for a given atmosphere (and zenith angle) """
+    # rough hardcoded parametrisation...
+    # change to xmax calculation later
+    return -148 + 0.712 * X
+
+
+def cherenkov_radius(x, a=1.00120823e-01, b=6.23688357e+00, c=1.10037370e+02):
+    """ rough estimation of radius of the cherenkov ring in meter. x = zenith in radians """
+    # rough hardcoded parametrisation...
+    # change to xmax calculation later
+    return (a * np.exp(b * x) + c)
+
+
+def get_starshaped_pattern_radii(zenith, obs_level, at=None, atm_model=None):
+    # This is just validated for has shower
+    # is not even sopisticated
+    zenith = np.deg2rad(zenith)
+
+    if at is None:
+        if atm_model is None:
+            sys.exit("No proper arguments for get_starshaped_pattern_radii")
+
+        at = models.Atmosphere(atm_model)
+
+    maxX = at.get_atmosphere(zenith, obs_level)
+
+    rmax = get_rmax(maxX) * 100
+    r_cherenkov_upper_limit = (cherenkov_radius(zenith) * 1.23 + 80) * 100
+
+    rs = np.append(0.005 * rmax, np.append(
+                   np.linspace(0.01 * rmax, r_cherenkov_upper_limit, 14, endpoint=False),
+                   np.linspace(r_cherenkov_upper_limit, rmax, 15)))
+
+    return rs
