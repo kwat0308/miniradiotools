@@ -13,6 +13,9 @@ import math
 from scipy.interpolate import griddata
 from radiotools.analyses import radiationenergy
 
+# TODO: add energy in plot description
+# TODO: give plots better names. maybe energy_SIMxxxxxx.png
+
 # pretty plots
 import cmasher as cmr
 import matplotlib as mpl
