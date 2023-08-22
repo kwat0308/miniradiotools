@@ -6,6 +6,8 @@ __pycache__
 *.pyc
 *.pyo
 *.root
+*.png
+*.list
 
 # jupyterlab checkpoints
 .ipynb_checkpoints
