@@ -50,6 +50,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                   It describes the angle between the Earth's surface and the magnetic field lines.
                   The default value is given for GRAND's Dunhuang site
                   Is converted to radians immediately
+
     Rmin, Rmax, n_rings, arm_orientations : used to calculate the positions of the antennas on the arms of the starshape !!in cm!!
             Do not change unless you know what you are doing!
     rs :  array of antenna positions (in cm!)
