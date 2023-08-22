@@ -17,7 +17,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                         Auger_CS = True, 
                         inclination=61.60523, # default for Dunhuang (in degrees)
                         Rmin=0., Rmax=50000., n_rings=30, # for positions in starshape !!in cm!!
-                        rs=None, # predefined ring radii for antenna
+                        antenna_rings=None, # predefined ring radii for antenna
                         arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape (in degrees)
                         vxB_plot=True
                         ):
@@ -52,8 +52,8 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                   Is converted to radians immediately
     Rmin, Rmax, n_rings, arm_orientations : used to calculate the positions of the antennas on the arms of the starshape !!in cm!!
             Do not change unless you know what you are doing!
-    rs :  array of antenna positions (in cm!)
-         predefined list of antenna positions
+    antenna_rings :  array of antenna ring radii (in cm!)
+         predefined list of antenna ring radii
     """
 
     # convert to rad for numpy calculations
@@ -134,15 +134,14 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     # array to save all station positions in
     station_positions_groundsystem = []
 
-    # rs = radius slices
     # check whether antenna ring radii are provided by input
-    if rs is None:
-        rs = np.linspace(Rmin, Rmax, n_rings + 1)
+    if antenna_rings is None:
+        antenna_rings = np.linspace(Rmin, Rmax, n_rings + 1)
 
     # if provided, add an additional antenna in the middle
     else:
-        n_rings = len(rs)
-        rs = np.append(0, rs)
+        n_rings = len(antenna_rings)
+        antenna_rings = np.append(0, antenna_rings)
 
 
     # open the antenna.list file to save the generated starshapes to
@@ -150,8 +149,8 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
         for i in np.arange(1, n_rings + 1): # loop over number of antenna rings
                 for j in np.arange(len(arm_orientations)): # loop over number of arms
                         # generate station positions in shower plane coordinates
-                        station_position = rs[i] * spherical_to_cartesian(np.pi * 0.5, arm_orientations[j])
-                        name = "pos_%i_%i_%.0f_%s" % (rs[i], np.rad2deg(arm_orientations[j]), obslevel, obsplane)
+                        station_position = antenna_rings[i] * spherical_to_cartesian(np.pi * 0.5, arm_orientations[j])
+                        name = "pos_%i_%i_%.0f_%s" % (antenna_rings[i], np.rad2deg(arm_orientations[j]), obslevel, obsplane)
 
                         # ground plane:
                         if obsplane == "gp":
@@ -255,8 +254,8 @@ def get_starshaped_pattern_radii(zenith, obs_level, at=None, atm_model=None):
     rmax = get_rmax(maxX) * 100
     r_cherenkov_upper_limit = (cherenkov_radius(zenith) * 1.23 + 80) * 100
 
-    rs = np.append(0.005 * rmax, np.append(
+    antenna_rings = np.append(0.005 * rmax, np.append(
                    np.linspace(0.01 * rmax, r_cherenkov_upper_limit, 14, endpoint=False),
                    np.linspace(r_cherenkov_upper_limit, rmax, 15)))
 
-    return rs
+    return antenna_rings
