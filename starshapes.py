@@ -19,7 +19,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                         Rmin=0., Rmax=50000., n_rings=30, # for positions in starshape !!in cm!!
                         antenna_rings=None, # predefined ring radii for antenna
                         arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape (in degrees)
-                        vxB_plot=True
+                        vxB_plot=False
                         ):
 
     """
