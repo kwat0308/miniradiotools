@@ -680,14 +680,16 @@ if __name__ == '__main__':
 
         else:
             f_h5 = h5py.File(args.input_file, "r")
-
-        try:
-            from radiotools import helper as rdhelp
-            from radiotools import coordinatesystems
-        except ModuleNotFoundError as e:
-            sys.exit("Could not find the radiotools module: '{}'\n"
-                     "You can get this module from https://github.com/nu-radio/radiotools.\n"
-                     "Make sure to add it to your enviourment, e.g., PYTHONPATH too. Stopping ...".format(e))
+        
+        from radiotools import helper as rdhelp
+        from radiotools import coordinatesystems
+        # try:
+        #     from radiotools import helper as rdhelp
+        #     from radiotools import coordinatesystems
+        # except ModuleNotFoundError as e:
+        #     sys.exit("Could not find the radiotools module: '{}'\n"
+        #              "You can get this module from https://github.com/nu-radio/radiotools.\n"
+        #              "Make sure to add it to your enviourment, e.g., PYTHONPATH too. Stopping ...".format(e))
         from scipy.signal import hilbert
         from scipy import optimize
 
