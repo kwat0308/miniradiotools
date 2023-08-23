@@ -242,7 +242,7 @@ def get_starshaped_pattern_radii(zenith, obs_level, at=None, atm_model=None):
     # This is just validated for has shower
     # is not even sopisticated
     zenith = np.deg2rad(zenith)
-    obs_level = obs_level/100 # convert from cm to m
+    obs_level = obs_level / 100 # convert from cm to m
 
     if at is None:
         if atm_model is None:
