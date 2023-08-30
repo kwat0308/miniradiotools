@@ -25,9 +25,8 @@ parser.add_option("--file", "-f", type="str", dest="file",
 obslevel = "156400" # Dunhuang
 
 #! TODO: read zenith from file - this is very important now that they are random!!
-zenith = "80.21" # in degrees
+zenith = "69" # in degrees
 
-# TODO: add frequency band as input parameter
 flow = "50"
 fhigh = "200"
 freqband = f"{flow}-{fhigh}"
@@ -35,7 +34,7 @@ freqband = f"{flow}-{fhigh}"
 if __name__ == '__main__':
     # for plotting a single file:
     if options.file:
-        reas_filename = glob.glob(options.file) 
+        reas_filename = glob.glob(options.file)[0]
         print("********************************")
         print(f"Now analyzing {reas_filename}")
         path_to_reas = reas_filename.split("SIM")[-2]
