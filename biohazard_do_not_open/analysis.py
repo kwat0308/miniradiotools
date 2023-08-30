@@ -5,6 +5,8 @@ import glob
 import numpy as np
 import subprocess
 from optparse import OptionParser
+import os
+from re import search
 
 from coreas_to_hdf5_mods import *
 
@@ -21,12 +23,31 @@ parser.add_option("--file", "-f", type="str", dest="file",
 
 (options, args) = parser.parse_args()
 
-# TODO: read obslevel from file
-obslevel = "156400" # Dunhuang
 
-#! TODO: read zenith from file - this is very important now that they are random!!
-zenith = "69" # in degrees
+# * * * * * * * * * * * * * *
+# * * * *  functions  * * * *
+# * * * * * * * * * * * * * *
+# read values from SIM.reas or RUN.inp
+def find_input_vals(line):
+  return search(r'[-+]?\ *[0-9]+\.?[0-9]*(?:[Ee]\ *[-+]?\ *[0-9]+)?', line)
 
+def read_params(input_file, param):
+  # works for both SIM.reas and RUN.inp, as long as you are looking for numbers
+  val = "1111"
+  with open(input_file, "r") as datafile:
+    for line in datafile:
+      if param in line:
+        line = line.lstrip()
+        if find_input_vals(line):
+          val = find_input_vals(line).group()
+          print(param, "=", val)
+          break 
+          # this is a problem for AutomaticTimeBoundaries, because it also shows up in other comments
+          # therefore, just break after the first one is found. this can definitely be improved
+  return float(val)
+# * * * * * * * * * * * * * *
+
+# GRAND freq range:
 flow = "50"
 fhigh = "200"
 freqband = f"{flow}-{fhigh}"
@@ -34,10 +55,18 @@ freqband = f"{flow}-{fhigh}"
 if __name__ == '__main__':
     # for plotting a single file:
     if options.file:
+        print(f"One shower to plot!")
         reas_filename = glob.glob(options.file)[0]
         print("********************************")
         print(f"Now analyzing {reas_filename}")
+        # get zenith from inp file:
+        zenith = read_params(reas_filename.split(".reas")[0] + ".inp", "ZENITH")
+        # get obslevel from reas file:
+        obslevel = read_params(reas_filename, "CoreCoordinateVertical") # in cm
+
+        # get just the path:
         path_to_reas = reas_filename.split("SIM")[-2]
+        # define the name for the highlevel hdf5
         output_filename_hl = reas_filename.split(".reas")[0] + "_highlevel.hdf5"
         
         # Run coreas_to_hdf5_mods.py
@@ -55,6 +84,16 @@ if __name__ == '__main__':
         subprocess.run(fluencemap_command, check=True)
         print(f"Plotted fluencemap for {output_filename_hl}")
 
+        # Generate the new filename
+        sim_number = reas_filename.split("SIM")[-1].split(".reas")[0]
+        new_filename = f"SIM{sim_number}.png"
+
+        # Rename the HDF5 file to the new PNG filename
+        os.rename(output_filename_hl, new_filename)
+        print(f"Renamed {output_filename_hl} to {new_filename}")
+        print(f"Finished analyzing {reas_filename}")
+        print("********************************")
+
 
     # for many plots in a given directory
     else:
@@ -68,7 +107,14 @@ if __name__ == '__main__':
         for reas_filename in reas_names:
             print("********************************")
             print(f"Now analyzing {reas_filename}")
+            # get zenith from inp file:
+            zenith = read_params(reas_filename.split(".reas")[0] + ".inp", "ZENITH")
+            # get obslevel from reas file:
+            obslevel = read_params(reas_filename, "CoreCoordinateVertical") # in cm
+
+            # get just the path:
             path_to_reas = reas_filename.split("SIM")[-2]
+            # define the name for the highlevel hdf5
             output_filename_hl = reas_filename.split(".reas")[0] + "_highlevel.hdf5"
             
             # Run coreas_to_hdf5_mods.py
@@ -85,5 +131,16 @@ if __name__ == '__main__':
             ]
             subprocess.run(fluencemap_command, check=True)
             print(f"Plotted fluencemap for {output_filename_hl}")
+
+            # Generate the new filename
+            sim_number = reas_filename.split("SIM")[-1].split(".reas")[0]
+            new_filename = f"SIM{sim_number}.png"
+
+            # Rename the HDF5 file to the new PNG filename
+            os.rename(output_filename_hl, new_filename)
+            print(f"Renamed {output_filename_hl} to {new_filename}")
+
+        print(f"Finished analyzing files in {options.directory}")
+        print("********************************")
 
 # TODO: skip if one shower happens to be incomplete. currently this crashes the whole process
