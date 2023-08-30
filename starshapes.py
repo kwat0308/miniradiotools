@@ -8,6 +8,7 @@
 import numpy as np
 from utils.coordtransform import cstransform
 from utils.coordtransform import spherical_to_cartesian
+from utils.cherenkov_radius import get_cherenkov_radius_model_from_depth
 import sys
 from radiotools.atmosphere import models
 
@@ -227,21 +228,17 @@ def get_rmax(X):
     """ returns maximum axis distance in meter for a given simulation as
     function of the atmosphere X in g/cm2 for a given atmosphere (and zenith angle) """
     # rough hardcoded parametrisation...
-    # change to xmax calculation later
     return -148 + 0.712 * X
 
 
-def cherenkov_radius(x, a=1.00120823e-01, b=6.23688357e+00, c=1.10037370e+02):
-    """ rough estimation of radius of the cherenkov ring in meter. x = zenith in radians """
-    # rough hardcoded parametrisation...
-    # change to xmax calculation later
-    return (a * np.exp(b * x) + c)
-
-
-def get_starshaped_pattern_radii(zenith, obs_level, at=None, atm_model=None):
+def get_starshaped_pattern_radii_new(zenith, obs_level, at=None, atm_model=None):
     # This is just validated for has shower
     # is not even sopisticated
+
+    # convert zenith angle to radians for use in functions
     zenith = np.deg2rad(zenith)
+
+    #TODO: add error that catches when input is in wrong unit
     obs_level = obs_level / 100 # convert from cm to m
 
     if at is None:
@@ -250,11 +247,22 @@ def get_starshaped_pattern_radii(zenith, obs_level, at=None, atm_model=None):
 
         at = models.Atmosphere(atm_model)
 
+    # calculate maximum distance of antenna from shower core (in shower plane)
+    # uses rough, hardcoded parametrisation
     maxX = at.get_atmosphere(zenith, obs_level)
+    rmax = get_rmax(maxX)
 
-    rmax = get_rmax(maxX) * 100
-    r_cherenkov_upper_limit = (cherenkov_radius(zenith) * 1.23 + 80) * 100
+    # refractive index at sea level for Dunhuang
+    n0_Dunhuang = 1.0002734814461
 
+    # calculate cherenkov radius from zenith angle, depth of maximum, observation level, and atmosphere model
+    # uses 750 g/cm² as a roughly correct value
+    # THIS IS ONLY (APPROX.) VALID FOR PROTONS AT ENERGIES: 10e16 - 10e19 eV
+    cherenkov_radius = get_cherenkov_radius_model_from_depth(zenith=zenith, depth=750, obs_level=obs_level, n0=n0_Dunhuang, model=41)
+
+    r_cherenkov_upper_limit = (cherenkov_radius * 1.23 + 80) * 100
+
+    # create list of antenna rings with denser rings within cherenkov radius and a little beyond
     antenna_rings = np.append(0.005 * rmax, np.append(
                    np.linspace(0.01 * rmax, r_cherenkov_upper_limit, 14, endpoint=False),
                    np.linspace(r_cherenkov_upper_limit, rmax, 15)))
