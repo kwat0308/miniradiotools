@@ -231,7 +231,7 @@ def get_rmax(X):
     return -148 + 0.712 * X
 
 
-def get_starshaped_pattern_radii_new(zenith, obs_level, at=None, atm_model=None):
+def get_starshaped_pattern_radii(zenith, obs_level, at=None, atm_model=None):
     # This is just validated for has shower
     # is not even sopisticated
 
