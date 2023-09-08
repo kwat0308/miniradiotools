@@ -250,7 +250,7 @@ def get_starshaped_pattern_radii(zenith, obs_level, at=None, atm_model=None):
     # calculate maximum distance of antenna from shower core (in shower plane)
     # uses rough, hardcoded parametrisation
     maxX = at.get_atmosphere(zenith, obs_level)
-    rmax = get_rmax(maxX)
+    rmax = get_rmax(maxX) * 100 # convert to cm for output
 
     # refractive index at sea level for Dunhuang
     n0_Dunhuang = 1.0002734814461
@@ -258,13 +258,15 @@ def get_starshaped_pattern_radii(zenith, obs_level, at=None, atm_model=None):
     # calculate cherenkov radius from zenith angle, depth of maximum, observation level, and atmosphere model
     # uses 750 g/cm² as a roughly correct value
     # THIS IS ONLY (APPROX.) VALID FOR PROTONS AT ENERGIES: 10e16 - 10e19 eV
-    cherenkov_radius = get_cherenkov_radius_model_from_depth(zenith=zenith, depth=750, obs_level=obs_level, n0=n0_Dunhuang, model=41)
+    cherenkov_radius = get_cherenkov_radius_model_from_depth(zenith=zenith, depth=750, obs_level=obs_level, n0=n0_Dunhuang, model=41) # returns in m
 
-    r_cherenkov_upper_limit = (cherenkov_radius * 1.23 + 80) * 100
+    r_cherenkov_upper_limit = (cherenkov_radius * 1.23 + 80) * 100 # convert to cm for output
 
     # create list of antenna rings with denser rings within cherenkov radius and a little beyond
     antenna_rings = np.append(0.005 * rmax, np.append(
                    np.linspace(0.01 * rmax, r_cherenkov_upper_limit, 14, endpoint=False),
                    np.linspace(r_cherenkov_upper_limit, rmax, 15)))
+    
+    # all lengths here are converted to cm for the input of the starshape generator function
 
     return antenna_rings
