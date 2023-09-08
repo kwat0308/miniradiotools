@@ -60,9 +60,9 @@ if __name__ == '__main__':
         print("********************************")
         print(f"Now analyzing {reas_filename}")
         # get zenith from inp file:
-        zenith = read_params(reas_filename.split(".reas")[0] + ".inp", "ZENITH")
+        zenith = int(read_params(reas_filename.split(".reas")[0] + ".inp", "THETAP"))
         # get obslevel from reas file:
-        obslevel = read_params(reas_filename, "CoreCoordinateVertical") # in cm
+        obslevel = int(read_params(reas_filename, "CoreCoordinateVertical")) # in cm
 
         # get just the path:
         path_to_reas = reas_filename.split("SIM")[-2]
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     else:
         print(f"Searching directory {options.directory} for .reas files")
         # find .reas files with glob
-        reas_names = glob.glob(options.directory + "/**" + "/SIM??????.reas") 
+        reas_names = glob.glob(options.directory + "/SIM??????.reas") 
         # use ** iif you want to go through all subdirectories, use * if you want to go only one level deeper
         print(f"Found {len(reas_names)} showers to plot!")
         # loop over all reas files
@@ -108,9 +108,9 @@ if __name__ == '__main__':
             print("********************************")
             print(f"Now analyzing {reas_filename}")
             # get zenith from inp file:
-            zenith = read_params(reas_filename.split(".reas")[0] + ".inp", "ZENITH")
+            zenith = int(read_params(reas_filename.split(".reas")[0] + ".inp", "THETAP"))
             # get obslevel from reas file:
-            obslevel = read_params(reas_filename, "CoreCoordinateVertical") # in cm
+            obslevel = int(read_params(reas_filename, "CoreCoordinateVertical")) # in cm
 
             # get just the path:
             path_to_reas = reas_filename.split("SIM")[-2]
