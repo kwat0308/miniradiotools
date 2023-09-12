@@ -55,8 +55,8 @@ class cstransform():
     """
 
     def __init__(self, zenith, azimuth, 
-                 declination=np.deg2rad(0.12532), # for Dunhuang
-                 inclination=np.deg2rad(61.60523), # for Dunhuang
+                 inclination=np.deg2rad(61.60523), # default for Dunhuang
+                 declination=np.deg2rad(0.12532), # default for Dunhuang
                  magnetic_field_vector=None):
         
         """ Initialization with signal/air-shower direction and magnetic field configuration.
@@ -65,17 +65,17 @@ class cstransform():
 
         Parameters
         ----------
-        zenith : float
-            zenith angle of the incoming signal/air-shower direction (0 deg is pointing to the zenith)
-        azimuth : float
-            azimuth angle of the incoming signal/air-shower direction (0 deg is North, 90 deg is East)
-        inclination : float
-            Inclination of the magnetic field.
+        zenith : float (in radians)
+            zenith angle of the incoming signal/air-shower direction (0 deg is pointing upwards)
+        azimuth : float (in radians)
+            azimuth angle of the incoming signal/air-shower direction (0 deg is North, 90 deg is West)
+        inclination : float (in radians)
+            Inclination of the magnetic field
             It describes the angle between the Earth's surface and the magnetic field lines.
             The default value is given for GRAND's Dunhuang site
-        declination : float
-            Declination of the magnetic field.
-            It describes the angle between the magnetic north of a compass and the true north.
+        declination : float (in radians)
+            Declination of the magnetic field
+            It describes the angle between the magnetic north of a compass and geographic north.
             The default value is given for GRAND's Dunhuang site
         
         magnetic_field_vector (optional): 3-vector, default None
@@ -83,12 +83,8 @@ class cstransform():
             if no magnetic field vector is specified, the value is calculated from the given inclination.
         """
 
-
+        # v points along shower propagation direction
         showeraxis = -1 * spherical_to_cartesian(zenith, azimuth)  # -1 is because shower is propagating towards us
-
-        if(magnetic_field_vector is None):
-            magnetic_field_vector = np.array([0, np.cos(inclination), -np.sin(inclination)]) 
-            # this calculation for B is also used in starshapes.py
 
         magnetic_field_normalized = magnetic_field_vector / linalg.norm(magnetic_field_vector)
         vxB = np.cross(showeraxis, magnetic_field_normalized)
@@ -99,6 +95,13 @@ class cstransform():
         e1 /= linalg.norm(e1)
         e2 /= linalg.norm(e2)
         e3 /= linalg.norm(e3)
+
+        # print("magnetic field vector: ", magnetic_field_vector)
+        # print("normed magnetic field vector: ", magnetic_field_normalized)
+        # print("vxB trafo matrix:")
+        # print(e1)
+        # print(e2)
+        # print(e3)
 
         self.__transformation_matrix_vBvvB = copy.copy(np.matrix([e1, e2, e3]))
         self.__inverse_transformation_matrix_vBvvB = np.linalg.inv(
