@@ -89,8 +89,8 @@ if __name__ == '__main__':
         new_filename = f"SIM{sim_number}.png"
 
         # Rename the HDF5 file to the new PNG filename
-        os.rename(output_filename_hl, new_filename)
-        print(f"Renamed {output_filename_hl} to {new_filename}")
+        # os.rename(output_filename_hl, new_filename)
+        # print(f"Renamed {output_filename_hl} to {new_filename}")
         print(f"Finished analyzing {reas_filename}")
         print("********************************")
 
@@ -99,8 +99,8 @@ if __name__ == '__main__':
     else:
         print(f"Searching directory {options.directory} for .reas files")
         # find .reas files with glob
-        reas_names = glob.glob(options.directory + "/SIM??????.reas") 
-        # use ** iif you want to go through all subdirectories, use * if you want to go only one level deeper
+        reas_names = glob.glob(options.directory + "/**" + "/SIM??????.reas") 
+        # use ** if you want to go through all subdirectories, use * if you want to go only one level deeper
         print(f"Found {len(reas_names)} showers to plot!")
         # loop over all reas files
 
@@ -137,8 +137,8 @@ if __name__ == '__main__':
             new_filename = f"SIM{sim_number}.png"
 
             # Rename the HDF5 file to the new PNG filename
-            os.rename(output_filename_hl, new_filename)
-            print(f"Renamed {output_filename_hl} to {new_filename}")
+            # os.rename(output_filename_hl, new_filename)
+            # print(f"Renamed {output_filename_hl} to {new_filename}")
 
         print(f"Finished analyzing files in {options.directory}")
         print("********************************")
