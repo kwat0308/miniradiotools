@@ -75,7 +75,11 @@ def read_input_file(hdf5_file, inp_file):
     try:
         f_h5_inputs.attrs["ATMOD"] = int(inp_dict["ATMOD"][0])
     except KeyError:
-        f_h5_inputs.attrs["ATMOD"] = 1  # CORSIKA default, U.S standard by Linsley
+        if str(inp_dict["ATMFILE"][0]) == "/home/hk-project-radiohfi/bg5912/work/soft/corsika-77420/run//ATMOSPHERE_20170401120000_Dunhuang.DAT":
+            f_h5_inputs.attrs["ATMOD"] = 41
+
+        else:
+            f_h5_inputs.attrs["ATMOD"] = 1  # CORSIKA default, U.S standard by Linsley
 
 
 def read_reas_file(hdf5_file, reas_file):
