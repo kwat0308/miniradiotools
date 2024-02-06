@@ -170,6 +170,10 @@ def read_antenna_data(hdf5_file, list_file, antenna_folder):
 
     lines = [item for item in list_file.readlines() if item != "\n"]  # skip empty lines
     lines = np.array([item for item in lines if not item.startswith("#")])  # skip comments
+
+    if args.remove_GP13_antennas:
+        lines = np.array([item for item in lines if item.endswith("p")]) # remove antennas that don't with the "sp" or "gp" suffices
+    
     list_file.close()
 
     observers = hdf5_file.create_group('observers')
@@ -666,6 +670,9 @@ if __name__ == '__main__':
                         help="Calculates Stokes' parameter, in eV/m2")
     parser.add_argument("--stokes_window", type=float, default=25.,
                         help="window around highest peak to calculate stokes parameter, in ns")
+
+    parser.add_option("--remove_gp13", "--rm13", dest="remove_GP13_antennas",
+                        help="Grand specific option to remove GP13 antennas from antenna list file")
 
     args = parser.parse_args()
 
