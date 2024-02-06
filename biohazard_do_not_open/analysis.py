@@ -129,7 +129,7 @@ if __name__ == '__main__':
             fluencemap_command = [
                 'python', 'fluencemap_mods.py', str(output_filename_hl), str(obslevel), str(freqband), str(zenith)
             ]
-            subprocess.run(fluencemap_command, check=True)
+            # subprocess.run(fluencemap_command, check=True)
             print(f"Plotted fluencemap for {output_filename_hl}")
 
             # Generate the new filename
