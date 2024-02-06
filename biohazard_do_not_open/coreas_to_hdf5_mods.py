@@ -671,7 +671,7 @@ if __name__ == '__main__':
     parser.add_argument("--stokes_window", type=float, default=25.,
                         help="window around highest peak to calculate stokes parameter, in ns")
 
-    parser.add_option("--remove_gp13", "--rm13", dest="remove_GP13_antennas",
+    parser.add_argument("--remove_gp13", "--rm13", dest="remove_GP13_antennas",
                         help="Grand specific option to remove GP13 antennas from antenna list file")
 
     args = parser.parse_args()
