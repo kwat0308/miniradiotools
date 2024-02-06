@@ -137,8 +137,8 @@ if __name__ == '__main__':
             new_filename = f"SIM{sim_number}.png"
 
             # Rename the HDF5 file to the new PNG filename
-            os.rename(output_filename_hl, new_filename)
-            print(f"Renamed {output_filename_hl} to {new_filename}")
+            # os.rename(output_filename_hl, new_filename)
+            # print(f"Renamed {output_filename_hl} to {new_filename}")
 
         print(f"Finished analyzing files in {options.directory}")
         print("********************************")
