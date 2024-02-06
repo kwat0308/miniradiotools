@@ -175,7 +175,7 @@ def read_antenna_data(hdf5_file, list_file, antenna_folder):
 
     if args.remove_GP13_antennas:
         print("Removing GP13 antennas!")
-        lines = np.array([item for item in lines if item.endswith("hello")]) # remove antennas that don't with the "gp" suffix
+        lines = np.array([item for item in lines if item.endswith("_gp\n")]) # remove antennas that don't with the "gp" suffix
 
     # print(lines)
     
