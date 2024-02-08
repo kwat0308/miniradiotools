@@ -119,7 +119,7 @@ if __name__ == '__main__':
             
             # Run coreas_to_hdf5_mods.py
             coreas_to_hdf5 = [
-                'python', 'coreas_to_hdf5_mods.py', str(reas_filename), '-hl', '--flow', str(flow), '--fhigh', str(fhigh),#  '--rm13',
+                'python', 'coreas_to_hdf5_mods.py', str(reas_filename), '-hl', '--flow', str(flow), '--fhigh', str(fhigh), '--rm13',
                 "--outputDirectory", str(path_to_reas)
             ]
             subprocess.run(coreas_to_hdf5, check=True)
