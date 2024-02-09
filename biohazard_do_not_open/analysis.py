@@ -105,13 +105,17 @@ if __name__ == '__main__':
         # use ** iif you want to go through all subdirectories, use * if you want to go only one level deeper
         print(f"Found {len(reas_names)} showers to with input files!")
         print(f"Found {len(long_names)} showers that have Corsika output!")
-        print(len(reas_names[long_names]))
         # loop over all reas files
 
         # put mask for 
-        for reas_filename in reas_names[long_names]:
+        for reas_filename in reas_names:
             print("********************************")
             print(f"Now analyzing {reas_filename}")
+
+            # Isolate simulation number
+            sim_number = reas_filename.split("SIM")[-1].split(".reas")[0]
+
+
             # get zenith from inp file:
             zenith = int(read_params(reas_filename.split(".reas")[0] + ".inp", "THETAP"))
             # get obslevel from reas file:
@@ -121,6 +125,10 @@ if __name__ == '__main__':
             path_to_reas = reas_filename.split("SIM")[-2]
             # define the name for the highlevel hdf5
             output_filename_hl = reas_filename.split(".reas")[0] + "_highlevel.hdf5"
+            long_file = f"{path_to_reas}/DAT{sim_number}.long"
+            print(long_file)
+            if os.path.isfile(long_file):
+              continue
             
             # Run coreas_to_hdf5_mods.py
             coreas_to_hdf5 = [
@@ -137,8 +145,6 @@ if __name__ == '__main__':
             # subprocess.run(fluencemap_command, check=True)
             print(f"Plotted fluencemap for {output_filename_hl}")
 
-            # Generate the new filename
-            sim_number = reas_filename.split("SIM")[-1].split(".reas")[0]
             new_filename = f"SIM{sim_number}.png"
 
             # Rename the HDF5 file to the new PNG filename
