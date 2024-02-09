@@ -126,8 +126,9 @@ if __name__ == '__main__':
             # define the name for the highlevel hdf5
             output_filename_hl = reas_filename.split(".reas")[0] + "_highlevel.hdf5"
             long_file = f"{path_to_reas}/DAT{sim_number}.long"
-            print(long_file)
-            if os.path.isfile(long_file):
+          
+            if not os.path.isfile(long_file):
+              print("Skipping file: ", long_file)
               continue
             
             # Run coreas_to_hdf5_mods.py
