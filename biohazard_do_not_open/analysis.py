@@ -100,11 +100,16 @@ if __name__ == '__main__':
         print(f"Searching directory {options.directory} for .reas files")
         # find .reas files with glob
         reas_names = glob.glob(options.directory + "/**/**/**/**/**" + "/SIM??????.reas") 
+        # find .long files to check the amount of sims that crashed
+        long_names = glob.glob(options.directory + "/**/**/**/**/**" + "/DAT??????.long")
         # use ** iif you want to go through all subdirectories, use * if you want to go only one level deeper
-        print(f"Found {len(reas_names)} showers to plot!")
+        print(f"Found {len(reas_names)} showers to with input files!")
+        print(f"Found {len(long_names)} showers that have Corsika output!")
+        print(len(reas_names[long_names]))
         # loop over all reas files
 
-        for reas_filename in reas_names:
+        # put mask for 
+        for reas_filename in reas_names[long_names]:
             print("********************************")
             print(f"Now analyzing {reas_filename}")
             # get zenith from inp file:
