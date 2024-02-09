@@ -99,9 +99,9 @@ if __name__ == '__main__':
     else:
         print(f"Searching directory {options.directory} for .reas files")
         # find .reas files with glob
-        reas_names = glob.glob(options.directory + "/**/**/**/**/**" + "/SIM??????.reas") 
+        reas_names = np.array(glob.glob(options.directory + "/**/**/**/**/**" + "/SIM??????.reas"))
         # find .long files to check the amount of sims that crashed
-        long_names = glob.glob(options.directory + "/**/**/**/**/**" + "/DAT??????.long")
+        long_names = np.array(glob.glob(options.directory + "/**/**/**/**/**" + "/DAT??????.long"))
         # use ** iif you want to go through all subdirectories, use * if you want to go only one level deeper
         print(f"Found {len(reas_names)} showers to with input files!")
         print(f"Found {len(long_names)} showers that have Corsika output!")
