@@ -107,6 +107,8 @@ if __name__ == '__main__':
         print(f"Found {len(long_names)} showers that have Corsika output!")
         # loop over all reas files
 
+        long_log = open(options.directory + "/crashed_sims_log.txt", 'w')
+        long_log.write("# Simulation .reas files that didn't run\n")
         # put mask for 
         for reas_filename in reas_names:
             print("********************************")
@@ -129,6 +131,7 @@ if __name__ == '__main__':
           
             if not os.path.isfile(long_file):
               print("Skipping file: ", long_file)
+              long_log.write(f"{reas_filename}\n")
               continue
             
             # Run coreas_to_hdf5_mods.py
@@ -154,5 +157,7 @@ if __name__ == '__main__':
 
         print(f"Finished analyzing files in {options.directory}")
         print("********************************")
+
+        long_log.close()
 
 # TODO: skip if one shower happens to be incomplete. currently this crashes the whole process
