@@ -63,7 +63,6 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
     # definition of inclination and declination are in coordtransform.py
     inclination = np.deg2rad(inclination) # default value is for Dunhuang
-    declination = np.deg2rad(0.12532) # default value is for Dunhuang
 
     # print information about input processing
     print(f"Generating antenna positions in {obsplane} at {obslevel} cm.")
