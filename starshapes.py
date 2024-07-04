@@ -6,18 +6,18 @@
 # co-author: Lukas Gülzow, @lguelzow
 
 import numpy as np
-from utils.coordtransform import cstransform
-from utils.coordtransform import spherical_to_cartesian
-from utils.cherenkov_radius import get_cherenkov_radius_model_from_depth
+from miniradiotools.utils.coordtransform import cstransform
+from miniradiotools.utils.coordtransform import spherical_to_cartesian
+from miniradiotools.utils.cherenkov_radius import get_cherenkov_radius_model_from_depth
 import sys
 from radiotools.atmosphere import models
 
 def create_stshp_list(zenith, azimuth, filename="antenna.list", 
-                        obslevel=156400.0, # default for Dunhuang, !!in cm!!
+                        obslevel=1400.0, # default for Dunhuang, !!in m!!
                         obsplane = "gp",
                         Auger_CS = True, 
-                        inclination=61.60523, # default for Dunhuang (in degrees)
-                        Rmin=0., Rmax=50000., n_rings=30, # for positions in starshape !!in cm!!
+                        inclination=np.deg2rad(-35.7324), # default for Dunhuang (in radians)
+                        Rmin=0., Rmax=500., n_rings=30, # for positions in starshape !!in m!!
                         antenna_rings=None, # predefined ring radii for antenna
                         arm_orientations=np.deg2rad([0, 45, 90, 135, 180, 225, 270, 315]), # for positions in starshape (in degrees)
                         vxB_plot=False
@@ -58,14 +58,14 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     """
 
     # convert to rad for numpy calculations
-    zenith = np.deg2rad(zenith)
-    azimuth = np.deg2rad(azimuth)
+    # zenith = np.deg2rad(zenith)
+    # azimuth = np.deg2rad(azimuth)
 
     # definition of inclination and declination are in coordtransform.py
-    inclination = np.deg2rad(inclination) # default value is for Dunhuang
+    # inclination = np.deg2rad(inclination) # default value is for Dunhuang
 
     # print information about input processing
-    print(f"Generating antenna positions in {obsplane} at {obslevel} cm.")
+    print(f"Generating antenna positions in {obsplane} at {obslevel} m.")
     print(f"zenith: {np.rad2deg(zenith)} degrees - in Corsika convention")
 
     # define angle for Auger rotation 
@@ -76,7 +76,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
           rot_angle = np.deg2rad(270)
 
           # save corsika azimuth angle for output
-          corsika_azimuth = np.round(np.rad2deg(azimuth) - 270, decimals=2)
+          corsika_azimuth = np.round(np.rad2deg(azimuth) - 270, decimals=10)
           # print Corsika input angle for Auger input
           print(f"azimuth: {corsika_azimuth} degrees - in Corsika convention")
 
@@ -85,7 +85,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
           rot_angle = 0
 
           # save corsika azimuth angle for output
-          corsika_azimuth = np.round(np.rad2deg(azimuth) - 180, decimals=2)
+          corsika_azimuth = np.round(np.rad2deg(azimuth) - 180, decimals=10)
           # print Corsika input angle
           print(f"azimuth: {corsika_azimuth} degrees - in Corsika convention")
 
@@ -120,8 +120,6 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     # define coordinate system transformations
     cst = cstransform(zenith = zenith,
                       azimuth= azimuth,
-                      declination=declination, # for Dunhuang
-                      inclination=inclination,
                       magnetic_field_vector=B_field # for Dunhuang
                       )
 
@@ -161,7 +159,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
                                 
                                 # write transformed coordinates into kartesian vector and 
                                 # set z coordinate to observation level
-                                gp_position = np.array([pos_2d[0], pos_2d[1], obslevel])
+                                gp_position = np.array([100 * pos_2d[0], 100 * pos_2d[1], 100 * obslevel])
 
                                 # write all station positions into list for plot in vxB coordinates
                                 station_positions_groundsystem.append(gp_position)
@@ -183,7 +181,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
 
                                 # write transformed coordinates into kartesian vector and 
                                 # add observation level to z coordinate
-                                sp_position = np.array([pos[0], pos[1], (pos[2] + obslevel)])
+                                sp_position = np.array([100 * pos[0], 100 * pos[1], 100 * (pos[2] + obslevel)])
 
                                 # write all station positions into list for plot in vxB coordinates
                                 station_positions_groundsystem.append(sp_position)
@@ -206,7 +204,7 @@ def create_stshp_list(zenith, azimuth, filename="antenna.list",
     # in case you want to plot the antennas in the shower plane coordinate system
     if vxB_plot==True:
         # open the shower.list file to save the generated starshapes to
-        with open("shower.list", "w") as file:
+        with open("shower_test.list", "w") as file:
                 
             # transform the station positions to vxB system for plot
             shower_plane_system = cst.transform_to_vxB_vxvxB(np.array(station_positions_groundsystem))
